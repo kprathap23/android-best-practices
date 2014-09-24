@@ -1,6 +1,7 @@
 package com.nbempire.android.sample.service;
 
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.domain.Search;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface ItemService {
 
-    public List<Item> findByTitulo(String titulo);
+    public List<Item> find(Search search);
 }

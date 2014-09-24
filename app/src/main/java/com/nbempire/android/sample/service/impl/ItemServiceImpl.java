@@ -1,6 +1,7 @@
 package com.nbempire.android.sample.service.impl;
 
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.repository.ItemRepository;
 import com.nbempire.android.sample.service.ItemService;
 
@@ -18,7 +19,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> findByTitulo(String titulo) {
-        return itemRepository.findByTitulo(titulo);
+    public List<Item> find(Search search) {
+        return itemRepository.findByTitulo(search.getQuery());
     }
 }

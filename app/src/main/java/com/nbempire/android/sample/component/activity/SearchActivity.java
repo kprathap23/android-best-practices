@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 
@@ -23,6 +24,8 @@ public class SearchActivity extends Activity {
 
     private static final String TAG = "SearchActivity";
     private ItemServiceImpl itemService;
+    private Search search;
+    private EditText query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,9 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.activity_search);
 
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
+
+        query = (EditText) findViewById(R.id.searchQuery);
+        search = new Search();
     }
 
     @Override
@@ -51,10 +57,10 @@ public class SearchActivity extends Activity {
     public void findItems(View view) {
         Log.v(TAG, "findItems...");
 
-        EditText query = (EditText) findViewById(R.id.searchQuery);
+        search.setQuery(query.getText().toString());
 
-        Log.d(TAG, "Finding items for query: " + query.getText().toString());
-        List<Item> items = itemService.findByTitulo(query.getText().toString());
+        Log.d(TAG, "Finding items for query: " + search.getQuery());
+        List<Item> items = itemService.find(search);
 
         //  Print results...
         Log.d(TAG, "Found items: " + items.size());
