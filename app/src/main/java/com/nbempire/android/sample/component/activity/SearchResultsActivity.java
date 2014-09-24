@@ -2,10 +2,10 @@ package com.nbempire.android.sample.component.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nbempire.android.sample.R;
+import com.nbempire.android.sample.adapter.ItemAdapter;
 import com.nbempire.android.sample.domain.Item;
 
 import java.util.List;
@@ -27,8 +27,8 @@ public class SearchResultsActivity extends Activity {
         ListView resultsListView = (ListView) findViewById(R.id.searchResultsListView);
 
         List<Item> items = getIntent().getParcelableArrayListExtra(Keys.RESULTS);
-
-        ArrayAdapter adapter = new ArrayAdapter<Item>(this, android.R.layout.simple_list_item_1, items);
+        Item[] param = new Item[items.size()];
+        ItemAdapter adapter = new ItemAdapter(this, items.toArray(param));
 
         resultsListView.setAdapter(adapter);
     }
