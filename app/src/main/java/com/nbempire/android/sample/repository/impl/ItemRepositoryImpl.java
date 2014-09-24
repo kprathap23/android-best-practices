@@ -15,6 +15,8 @@ public class ItemRepositoryImpl implements ItemRepository {
         List<Item> items = new ArrayList<Item>();
         items.add(new Item("ipod nano"));
         items.add(new Item("ipod touch"));
+        items.add(new Item("ipod touch 16gb"));
+        items.add(new Item("ipod nano 32gb"));
 
         return items;
     }

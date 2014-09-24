@@ -1,7 +1,9 @@
 package com.nbempire.android.sample.component.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -59,6 +62,10 @@ public class SearchActivity extends Activity {
             Log.d(TAG, "Item title: " + item.getTitulo());
         }
 
+        Log.d(TAG, "Starting activity to display search results...");
 
+        Intent resultsIntent = new Intent(this, SearchResultsActivity.class);
+        resultsIntent.putParcelableArrayListExtra(SearchResultsActivity.Keys.RESULTS, new ArrayList<Parcelable>(items));
+        startActivity(resultsIntent);
     }
 }
