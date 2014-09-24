@@ -2,6 +2,7 @@ package com.nbempire.android.sample.component.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -27,10 +28,14 @@ public class SearchActivity extends Activity {
     private Search search;
     private EditText query;
 
+    private Activity context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        this.context = this;
 
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
 
@@ -60,18 +65,25 @@ public class SearchActivity extends Activity {
         search.setQuery(query.getText().toString());
 
         Log.d(TAG, "Finding items for query: " + search.getQuery());
-        List<Item> items = itemService.find(search);
 
-        //  Print results...
-        Log.d(TAG, "Found items: " + items.size());
-        for (Item item : items) {
-            Log.d(TAG, "Item title: " + item.getTitulo());
+        new SearchTask().execute(search);
+    }
+
+    public class SearchTask extends AsyncTask<Search, Integer, List<Item>> {
+
+        @Override
+        protected List<Item> doInBackground(Search... searches) {
+            return itemService.find(search);
         }
 
-        Log.d(TAG, "Starting activity to display search results...");
+        @Override
+        protected void onPostExecute(List<Item> items) {
+            Log.d(TAG, "Starting activity to display search results...");
 
-        Intent resultsIntent = new Intent(this, SearchResultsActivity.class);
-        resultsIntent.putParcelableArrayListExtra(SearchResultsActivity.Keys.RESULTS, new ArrayList<Parcelable>(items));
-        startActivity(resultsIntent);
+            Intent resultsIntent = new Intent(context, SearchResultsActivity.class);
+            resultsIntent.putParcelableArrayListExtra(SearchResultsActivity.Keys.RESULTS, new ArrayList<Parcelable>(items));
+            startActivity(resultsIntent);
+        }
     }
+
 }
