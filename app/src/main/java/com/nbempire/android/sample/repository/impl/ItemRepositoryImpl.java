@@ -57,7 +57,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
             androidHttpClient.close();
 
-            items = parseItemsJson(object.getJSONArray(Keys.Search.RESULTS));
+            items = parseJsonItems(object.getJSONArray(Keys.Search.RESULTS));
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Error encoding user input for make an HTTP request: " + e.getMessage());
         } catch (IOException e) {
@@ -69,7 +69,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         return items;
     }
 
-    private List<Item> parseItemsJson(JSONArray results) throws JSONException {
+    private List<Item> parseJsonItems(JSONArray results) throws JSONException {
         List<Item> items = new ArrayList<Item>();
 
         for (int i = 0; i < results.length(); i++) {
