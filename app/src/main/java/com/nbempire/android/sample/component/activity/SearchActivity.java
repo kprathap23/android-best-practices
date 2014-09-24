@@ -1,9 +1,11 @@
-package com.nbempire.android.sample;
+package com.nbempire.android.sample.component.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.nbempire.android.sample.R;
 
 
 public class SearchActivity extends Activity {
