@@ -43,6 +43,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             public static final String TITULO = "title";
             public static final String SUBTITULO = "subtitle";
             public static final String CANTIDAD_DISPONIBLE = "available_quantity";
+            public static final String THUMBNAIL = "thumbnail";
         }
 
     }
@@ -84,6 +85,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             Item eachItem = new Item(parseJson(eachObject.getString(Keys.Item.TITULO)));
             eachItem.setSubtitulo(parseJson(eachObject.getString(Keys.Item.SUBTITULO)));
             eachItem.setCantidadDisponible(parseJson(eachObject.getString(Keys.Item.CANTIDAD_DISPONIBLE)));
+            eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
 
             items.add(eachItem);
         }

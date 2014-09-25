@@ -11,6 +11,7 @@ public class Item implements Parcelable {
     private String titulo;
     private String subtitulo;
     private String cantidadDisponible;
+    private String thumbnail;
 
     public Item(String titulo) {
         this.titulo = titulo;
@@ -36,10 +37,12 @@ public class Item implements Parcelable {
         return cantidadDisponible;
     }
 
-    //    Override it because of ArrayAdapter implementation... it sucks!
-    @Override
-    public String toString() {
-        return titulo;
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     //  From here everything is required to use Item as a Parcelable object.
@@ -53,7 +56,6 @@ public class Item implements Parcelable {
         }
     };
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -64,12 +66,14 @@ public class Item implements Parcelable {
         parcel.writeString(titulo);
         parcel.writeString(subtitulo);
         parcel.writeString(cantidadDisponible);
+        parcel.writeString(thumbnail);
     }
 
     public Item(Parcel in) {
         this.titulo = in.readString();
         this.subtitulo = in.readString();
         this.cantidadDisponible = in.readString();
+        this.thumbnail = in.readString();
     }
 
 }
