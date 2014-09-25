@@ -20,6 +20,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> find(Search search) {
-        return itemRepository.findByTitulo(search.getQuery());
+        return itemRepository.findByTitle(search.getQuery());
     }
 }

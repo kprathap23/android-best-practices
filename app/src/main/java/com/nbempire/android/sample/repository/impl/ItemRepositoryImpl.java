@@ -40,26 +40,27 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
 
         private static class Item {
-            public static final String TITULO = "title";
-            public static final String SUBTITULO = "subtitle";
-            public static final String CANTIDAD_DISPONIBLE = "available_quantity";
+            public static final String TITLE = "title";
+            public static final String SUBTITLE = "subtitle";
+            public static final String AVAILABLE_QUANTITY = "available_quantity";
             public static final String THUMBNAIL = "thumbnail";
         }
 
     }
 
     @Override
-    public List<Item> findByTitulo(String titulo) {
+    public List<Item> findByTitle(String title) {
         List<Item> items = new ArrayList<Item>();
 
         AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("prueba");
         HttpGet get = null;
         try {
-            get = new HttpGet("https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(titulo, "UTF-8") + "&limit=30");
+            String encoding = "UTF-8";
+            get = new HttpGet("https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(title, encoding) + "&limit=30");
 
             Log.d(TAG, "Executing request against MeLi API...");
             HttpResponse response = androidHttpClient.execute(get);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), encoding));
             JSONObject object = new JSONObject(reader.readLine());
 
             androidHttpClient.close();
@@ -82,9 +83,9 @@ public class ItemRepositoryImpl implements ItemRepository {
         for (int i = 0; i < results.length(); i++) {
             JSONObject eachObject = results.getJSONObject(i);
 
-            Item eachItem = new Item(parseJson(eachObject.getString(Keys.Item.TITULO)));
-            eachItem.setSubtitulo(parseJson(eachObject.getString(Keys.Item.SUBTITULO)));
-            eachItem.setCantidadDisponible(parseJson(eachObject.getString(Keys.Item.CANTIDAD_DISPONIBLE)));
+            Item eachItem = new Item(parseJson(eachObject.getString(Keys.Item.TITLE)));
+            eachItem.setSubtitle(parseJson(eachObject.getString(Keys.Item.SUBTITLE)));
+            eachItem.setAvailableQuantity(parseJson(eachObject.getString(Keys.Item.AVAILABLE_QUANTITY)));
             eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
 
             items.add(eachItem);

@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface ItemRepository {
 
-    public List<Item> findByTitulo(String titulo);
+    public List<Item> findByTitle(String title);
 }

@@ -5,36 +5,38 @@ import android.os.Parcelable;
 
 /**
  * Created by nbarrios on 24/09/14.
+ * <p/>
+ * Some parts of the code was taken from the official <a href="http://developer.android.com/reference/android/os/Parcelable.html">Android documentation</a>
  */
 public class Item implements Parcelable {
 
-    private String titulo;
-    private String subtitulo;
-    private String cantidadDisponible;
+    private String title;
+    private String subtitle;
+    private String availableQuantity;
     private String thumbnail;
 
-    public Item(String titulo) {
-        this.titulo = titulo;
+    public Item(String title) {
+        this.title = title;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSubtitulo(String subtitulo) {
-        this.subtitulo = subtitulo;
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
 
-    public String getSubtitulo() {
-        return subtitulo;
+    public String getSubtitle() {
+        return subtitle;
     }
 
-    public void setCantidadDisponible(String cantidadDisponible) {
-        this.cantidadDisponible = cantidadDisponible;
+    public void setAvailableQuantity(String availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
-    public String getCantidadDisponible() {
-        return cantidadDisponible;
+    public String getAvailableQuantity() {
+        return availableQuantity;
     }
 
     public String getThumbnail() {
@@ -63,16 +65,16 @@ public class Item implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(titulo);
-        parcel.writeString(subtitulo);
-        parcel.writeString(cantidadDisponible);
+        parcel.writeString(title);
+        parcel.writeString(subtitle);
+        parcel.writeString(availableQuantity);
         parcel.writeString(thumbnail);
     }
 
     public Item(Parcel in) {
-        this.titulo = in.readString();
-        this.subtitulo = in.readString();
-        this.cantidadDisponible = in.readString();
+        this.title = in.readString();
+        this.subtitle = in.readString();
+        this.availableQuantity = in.readString();
         this.thumbnail = in.readString();
     }
 

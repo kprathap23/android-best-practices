@@ -48,9 +48,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.item_in_list, parent, false);
 
-            viewHolder.titulo = (TextView) convertView.findViewById(R.id.item_title);
-            viewHolder.subtitulo = (TextView) convertView.findViewById(R.id.item_subtitle);
-            viewHolder.cantidadDisponible = (TextView) convertView.findViewById(R.id.item_quantity);
+            viewHolder.title = (TextView) convertView.findViewById(R.id.item_title);
+            viewHolder.subtitle = (TextView) convertView.findViewById(R.id.item_subtitle);
+            viewHolder.availableQuantity = (TextView) convertView.findViewById(R.id.item_quantity);
             viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.item_thumbnail);
 
             convertView.setTag(viewHolder);
@@ -64,16 +64,16 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             imageDownloadManager.load(cadaItem.getThumbnail(), viewHolder.thumbnail);
         }
 
-        if (viewHolder.titulo != null) {
-            viewHolder.titulo.setText(cadaItem.getTitulo());
+        if (viewHolder.title != null) {
+            viewHolder.title.setText(cadaItem.getTitle());
         }
 
-        if (viewHolder.subtitulo != null) {
-            viewHolder.subtitulo.setText(cadaItem.getSubtitulo());
+        if (viewHolder.subtitle != null) {
+            viewHolder.subtitle.setText(cadaItem.getSubtitle());
         }
 
-        if (viewHolder.cantidadDisponible != null) {
-            viewHolder.cantidadDisponible.setText(cadaItem.getCantidadDisponible());
+        if (viewHolder.availableQuantity != null) {
+            viewHolder.availableQuantity.setText(cadaItem.getAvailableQuantity());
         }
 
         return convertView;
@@ -83,9 +83,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
      * Read about holder pattern in <a href="http://developer.android.com/training/improving-layouts/smooth-scrolling.html">this article of the Android documentation</a>.
      */
     static class ViewHolder {
-        TextView titulo;
-        TextView subtitulo;
-        TextView cantidadDisponible;
+        TextView title;
+        TextView subtitle;
+        TextView availableQuantity;
         ImageView thumbnail;
     }
 }
