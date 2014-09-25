@@ -4,5 +4,6 @@
     <string name="app_name">Android Sample</string>
     <string name="search_label">Ingresa tu búsqueda</string>
     <string name="search">Buscar</string>
+    <string name="still_left">Aún quedan:</string>
 
 </resources>
