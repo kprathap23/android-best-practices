@@ -38,7 +38,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Item cadaItem = getItem(position);
 
         TextView titulo = (TextView) view.findViewById(R.id.item_title);
-        titulo.setText(cadaItem.getTitulo());
+        if (titulo != null) {
+            titulo.setText(cadaItem.getTitulo());
+        }
 
         TextView subtitulo = (TextView) view.findViewById(R.id.item_subtitle);
         if (subtitulo != null) {
