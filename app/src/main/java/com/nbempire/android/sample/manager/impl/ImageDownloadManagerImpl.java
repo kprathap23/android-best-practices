@@ -50,7 +50,7 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
 
     @Override
     public void load(final String uri, final ImageView imageView) {
-        final Bitmap bitmap = getBitmapFromMemoryCache(uri);
+        final Bitmap bitmap = memoryCache.get(uri);
 
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
@@ -67,7 +67,9 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
                         }
                     });
 
-                    addBitmapToMemoryCache(uri, bitmap);
+                    if (memoryCache.get(uri) == null) {
+                        memoryCache.put(uri, bitmap);
+                    }
 
                 }
             }).start();
@@ -84,16 +86,6 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
         }
 
         return BitmapFactory.decodeStream(inputStream);
-    }
-
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemoryCache(key) == null) {
-            memoryCache.put(key, bitmap);
-        }
-    }
-
-    public Bitmap getBitmapFromMemoryCache(String key) {
-        return memoryCache.get(key);
     }
 
     public static ImageDownloadManagerImpl getInstance() {
