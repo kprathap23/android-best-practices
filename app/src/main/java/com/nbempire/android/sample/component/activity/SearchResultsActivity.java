@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class SearchResultsActivity extends Activity {
 
+    /**
+     * Used for log messages.
+     */
     private static final String TAG = "SearchResultsActivity";
 
     public class Keys {

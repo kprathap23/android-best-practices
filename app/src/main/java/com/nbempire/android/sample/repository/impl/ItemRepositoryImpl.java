@@ -25,6 +25,9 @@ import java.util.List;
  */
 public class ItemRepositoryImpl implements ItemRepository {
 
+    /**
+     * Used for log messages.
+     */
     private static final String TAG = "ItemRepositoryImpl";
 
     /**
