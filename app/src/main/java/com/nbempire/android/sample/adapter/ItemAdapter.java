@@ -27,31 +27,43 @@ public class ItemAdapter extends ArrayAdapter<Item> {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
+        ViewHolder viewHolder = new ViewHolder();
 
         if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.item_in_list, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_in_list, parent, false);
+
+            viewHolder.titulo = (TextView) convertView.findViewById(R.id.item_title);
+            viewHolder.subtitulo = (TextView) convertView.findViewById(R.id.item_subtitle);
+            viewHolder.cantidadDisponible = (TextView) convertView.findViewById(R.id.item_quantity);
+
+            convertView.setTag(viewHolder);
         } else {
-            view = convertView;
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         Item cadaItem = getItem(position);
 
-        TextView titulo = (TextView) view.findViewById(R.id.item_title);
-        if (titulo != null) {
-            titulo.setText(cadaItem.getTitulo());
+        if (viewHolder.titulo != null) {
+            viewHolder.titulo.setText(cadaItem.getTitulo());
         }
 
-        TextView subtitulo = (TextView) view.findViewById(R.id.item_subtitle);
-        if (subtitulo != null) {
-            subtitulo.setText(cadaItem.getSubtitulo());
+        if (viewHolder.subtitulo != null) {
+            viewHolder.subtitulo.setText(cadaItem.getSubtitulo());
         }
 
-        TextView cantidadDisponible = (TextView) view.findViewById(R.id.item_quantity);
-        if (cantidadDisponible != null) {
-            cantidadDisponible.setText(cadaItem.getCantidadDisponible());
+        if (viewHolder.cantidadDisponible != null) {
+            viewHolder.cantidadDisponible.setText(cadaItem.getCantidadDisponible());
         }
 
-        return view;
+        return convertView;
+    }
+
+    /**
+     * Read about holder pattern in <a href="http://developer.android.com/training/improving-layouts/smooth-scrolling.html">this article of the Android documentation</a>.
+     */
+    static class ViewHolder {
+        TextView titulo;
+        TextView subtitulo;
+        TextView cantidadDisponible;
     }
 }
