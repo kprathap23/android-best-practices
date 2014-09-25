@@ -36,6 +36,7 @@ public class SearchResultsActivity extends Activity {
         List<Item> items = getIntent().getParcelableArrayListExtra(Keys.RESULTS);
         Item[] param = new Item[items.size()];
 
+        //  TODO : Check this new instance of ItemAdapter.
         resultsListView.setAdapter(new ItemAdapter(this, items.toArray(param)));
     }
 
