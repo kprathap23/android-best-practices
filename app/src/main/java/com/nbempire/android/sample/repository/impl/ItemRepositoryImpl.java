@@ -51,6 +51,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         try {
             get = new HttpGet("https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(titulo, "UTF-8") + "&limit=30");
 
+            Log.d(TAG, "Executing request against MeLi API...");
             HttpResponse response = androidHttpClient.execute(get);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             JSONObject object = new JSONObject(reader.readLine());
