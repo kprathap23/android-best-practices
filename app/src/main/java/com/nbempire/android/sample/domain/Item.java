@@ -9,6 +9,8 @@ import android.os.Parcelable;
 public class Item implements Parcelable {
 
     private String titulo;
+    private String subtitulo;
+    private String cantidadDisponible;
 
     public Item(String titulo) {
         this.titulo = titulo;
@@ -16,6 +18,22 @@ public class Item implements Parcelable {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public void setSubtitulo(String subtitulo) {
+        this.subtitulo = subtitulo;
+    }
+
+    public String getSubtitulo() {
+        return subtitulo;
+    }
+
+    public void setCantidadDisponible(String cantidadDisponible) {
+        this.cantidadDisponible = cantidadDisponible;
+    }
+
+    public String getCantidadDisponible() {
+        return cantidadDisponible;
     }
 
     //    Override it because of ArrayAdapter implementation... it sucks!
@@ -44,9 +62,14 @@ public class Item implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(titulo);
+        parcel.writeString(subtitulo);
+        parcel.writeString(cantidadDisponible);
     }
 
     public Item(Parcel in) {
         this.titulo = in.readString();
+        this.subtitulo = in.readString();
+        this.cantidadDisponible = in.readString();
     }
+
 }
