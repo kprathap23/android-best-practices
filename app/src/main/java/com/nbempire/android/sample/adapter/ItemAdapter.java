@@ -16,6 +16,8 @@ import com.nbempire.android.sample.manager.impl.ImageDownloadManagerImpl;
 
 /**
  * Created by nbarrios on 24/09/14.
+ * <p/>
+ * Some parts of the code was taken from the official <a href="http://developer.android.com/training/improving-layouts/smooth-scrolling.html">Android documentation</a>
  */
 public class ItemAdapter extends ArrayAdapter<Item> {
 
