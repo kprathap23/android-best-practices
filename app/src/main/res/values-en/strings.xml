@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Android Sample</string>
-    <string name="search_label">Ingresa tu búsqueda</string>
-    <string name="search">Buscar</string>
+    <string name="search_label">Enter your query</string>
+    <string name="search">Search</string>
 
 </resources>
