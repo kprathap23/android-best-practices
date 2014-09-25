@@ -1,7 +1,9 @@
 package com.nbempire.android.sample.task;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.util.Log;
@@ -25,17 +27,27 @@ public class SearchTask extends AsyncTask<Search, Integer, List<Item>> {
      * Used for log messages.
      */
     private static final String TAG = "SearchTask";
+    public static final String LAST_QUERY = "lastSearchQuery";
+
     private final Activity context;
+    private final SharedPreferences.Editor preferencesEditor;
+
     private ItemService itemService;
 
     public SearchTask(Activity context) {
         this.context = context;
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
+        this.preferencesEditor = context.getPreferences(Context.MODE_PRIVATE).edit();
     }
 
     @Override
     protected List<Item> doInBackground(Search... searches) {
-        return itemService.find(searches[0]);
+        Search search = searches[0];
+
+        Log.d(TAG, "Storing last search...");
+        preferencesEditor.putString(LAST_QUERY, search.getQuery()).apply();
+
+        return itemService.find(search);
     }
 
     @Override

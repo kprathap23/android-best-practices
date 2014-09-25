@@ -19,15 +19,18 @@ public class SearchActivity extends Activity {
     private static final String TAG = "SearchActivity";
 
     private Search search;
-
     private EditText query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "onCreate...");
+
         setContentView(R.layout.activity_search);
 
         query = (EditText) findViewById(R.id.searchQuery);
+        query.setText(getPreferences(MODE_PRIVATE).getString(SearchTask.LAST_QUERY, null));
+
         search = new Search();
     }
 
@@ -37,7 +40,6 @@ public class SearchActivity extends Activity {
         search.setQuery(query.getText().toString());
 
         Log.d(TAG, "Finding items for query: " + search.getQuery());
-
         new SearchTask(this).execute(search);
     }
 
