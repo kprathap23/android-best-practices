@@ -46,7 +46,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
     protected Pageable<Item> doInBackground(Search... searches) {
         Search search = searches[0];
 
-        Log.d(TAG, "Storing last search...");
+        Log.d(TAG, "Storing last search: " + search.getQuery());
         preferencesEditor.putString(LAST_QUERY, search.getQuery()).apply();
 
         return itemService.find(search);
