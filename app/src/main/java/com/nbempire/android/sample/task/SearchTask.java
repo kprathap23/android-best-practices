@@ -14,14 +14,14 @@ import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+import com.nbempire.android.sample.util.Pageable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by nbarrios on 24/09/14.
  */
-public class SearchTask extends AsyncTask<Search, Integer, List<Item>> {
+public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     /**
      * Used for log messages.
@@ -41,7 +41,7 @@ public class SearchTask extends AsyncTask<Search, Integer, List<Item>> {
     }
 
     @Override
-    protected List<Item> doInBackground(Search... searches) {
+    protected Pageable<Item> doInBackground(Search... searches) {
         Search search = searches[0];
 
         Log.d(TAG, "Storing last search...");
@@ -51,11 +51,11 @@ public class SearchTask extends AsyncTask<Search, Integer, List<Item>> {
     }
 
     @Override
-    protected void onPostExecute(List<Item> items) {
+    protected void onPostExecute(Pageable<Item> pageable) {
         Log.d(TAG, "Starting activity to display search results...");
 
         Intent resultsIntent = new Intent(context, SearchResultsActivity.class);
-        resultsIntent.putParcelableArrayListExtra(SearchResultsActivity.Keys.RESULTS, new ArrayList<Parcelable>(items));
+        resultsIntent.putParcelableArrayListExtra(SearchResultsActivity.Keys.RESULTS, new ArrayList<Parcelable>(pageable.getResult()));
         context.startActivity(resultsIntent);
     }
 }

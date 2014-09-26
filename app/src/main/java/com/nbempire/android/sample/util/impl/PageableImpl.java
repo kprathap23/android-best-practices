@@ -13,9 +13,9 @@ public class PageableImpl<T> implements Pageable<T> {
     private List<T> result;
     private Paging paging;
 
-    public PageableImpl(List<T> result, int total, int limit) {
+    public PageableImpl(List<T> result, Paging paging) {
         this.result = result;
-        this.paging = new Paging(total, limit);
+        this.paging = paging;
     }
 
     @Override
@@ -28,8 +28,4 @@ public class PageableImpl<T> implements Pageable<T> {
         return this.paging;
     }
 
-    @Override
-    public void update(Paging paging) {
-        this.paging = paging;
-    }
 }

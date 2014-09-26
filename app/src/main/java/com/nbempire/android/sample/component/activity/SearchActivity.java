@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.nbempire.android.sample.R;
+import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.task.SearchTask;
 
@@ -17,6 +18,7 @@ public class SearchActivity extends Activity {
      * Used for log messages.
      */
     private static final String TAG = "SearchActivity";
+    private static final int ITEMS_PER_PAGE = 15;
 
     private Search search;
     private EditText query;
@@ -38,6 +40,7 @@ public class SearchActivity extends Activity {
         Log.v(TAG, "findItems...");
 
         search.setQuery(query.getText().toString());
+        search.setPaging(new Paging(ITEMS_PER_PAGE));
 
         Log.d(TAG, "Finding items for query: " + search.getQuery());
         new SearchTask(this).execute(search);

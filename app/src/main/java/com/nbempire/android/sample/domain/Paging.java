@@ -5,20 +5,19 @@ package com.nbempire.android.sample.domain;
  */
 public class Paging {
 
-    private int total;
+    private Integer total;
     private int offset;
     private int limit;
 
-    public Paging(int total, int limit) {
-        this.total = total;
+    public Paging(int limit) {
         this.limit = limit;
     }
 
-    public int getTotal() {
+    public Integer getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Integer total) {
         this.total = total;
     }
 

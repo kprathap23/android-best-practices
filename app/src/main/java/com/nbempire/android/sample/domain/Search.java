@@ -6,6 +6,7 @@ package com.nbempire.android.sample.domain;
 public class Search {
 
     private String query;
+    private Paging paging;
 
     public String getQuery() {
         return query;
@@ -13,5 +14,13 @@ public class Search {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public Paging getPaging() {
+        return paging;
+    }
+
+    public void setPaging(Paging paging) {
+        this.paging = paging;
     }
 }

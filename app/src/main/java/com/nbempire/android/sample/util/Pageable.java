@@ -13,6 +13,4 @@ public interface Pageable<T> {
 
     public Paging getPaging();
 
-    public void update(Paging paging);
-
 }

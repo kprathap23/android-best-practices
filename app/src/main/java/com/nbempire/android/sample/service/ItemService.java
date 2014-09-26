@@ -2,13 +2,12 @@ package com.nbempire.android.sample.service;
 
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
-
-import java.util.List;
+import com.nbempire.android.sample.util.Pageable;
 
 /**
  * Created by nbarrios on 24/09/14.
  */
 public interface ItemService {
 
-    public List<Item> find(Search search);
+    public Pageable<Item> find(Search search);
 }

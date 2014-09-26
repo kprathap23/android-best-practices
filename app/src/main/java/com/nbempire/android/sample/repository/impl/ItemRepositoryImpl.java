@@ -4,7 +4,10 @@ import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.repository.ItemRepository;
+import com.nbempire.android.sample.util.Pageable;
+import com.nbempire.android.sample.util.impl.PageableImpl;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -36,7 +39,13 @@ public class ItemRepositoryImpl implements ItemRepository {
     private static class Keys {
 
         private static class Search {
-            public static final String RESULTADOS = "results";
+            public static final String RESULTS = "results";
+            public static final String PAGING = "paging";
+        }
+
+        private static class Paging {
+            public static final String TOTAL = "total";
+            public static final String OFFSET = "offset";
         }
 
         private static class Item {
@@ -49,23 +58,29 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<Item> findByTitle(String title) {
-        List<Item> items = new ArrayList<Item>();
+    public Pageable<Item> findByTitle(String title, Paging paging) {
+        Pageable<Item> pageable = null;
 
         AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("prueba");
-        HttpGet get = null;
         try {
             String encoding = "UTF-8";
-            get = new HttpGet("https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(title, encoding) + "&limit=30");
+            HttpGet get = new HttpGet("https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(title, encoding) + "&limit=" + paging.getLimit());
 
             Log.d(TAG, "Executing request against MeLi API...");
             HttpResponse response = androidHttpClient.execute(get);
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), encoding));
             JSONObject object = new JSONObject(reader.readLine());
 
             androidHttpClient.close();
 
-            items = parseJsonItems(object.getJSONArray(Keys.Search.RESULTADOS));
+            List<Item> items = parseJsonItems(object.getJSONArray(Keys.Search.RESULTS));
+
+            JSONObject jsonPaging = object.getJSONObject(Keys.Search.PAGING);
+            paging.setOffset(jsonPaging.getInt(Keys.Paging.OFFSET));
+            paging.setTotal(jsonPaging.getInt(Keys.Paging.TOTAL));
+
+            pageable = new PageableImpl<Item>(items, paging);
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Error encoding user input for make an HTTP request: " + e.getMessage());
         } catch (IOException e) {
@@ -74,7 +89,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             Log.e(TAG, "Error parsing response: " + e.getMessage());
         }
 
-        return items;
+        return pageable;
     }
 
     private List<Item> parseJsonItems(JSONArray results) throws JSONException {
