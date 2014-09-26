@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.adapter.ItemAdapter;
 import com.nbempire.android.sample.component.activity.SearchResultsActivity;
@@ -37,7 +38,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
     public SearchTask(Activity context) {
         this.context = context;
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
-        this.preferencesEditor = context.getPreferences(Context.MODE_PRIVATE).edit();
+        this.preferencesEditor = context.getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
 
         resultsListView = (ListView) context.findViewById(R.id.searchResultsListView);
     }

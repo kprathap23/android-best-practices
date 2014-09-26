@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.domain.Search;
@@ -32,7 +33,7 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.activity_search);
 
         query = (EditText) findViewById(R.id.searchQuery);
-        query.setText(getPreferences(MODE_PRIVATE).getString(SearchTask.LAST_QUERY, null));
+        query.setText(getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, MODE_PRIVATE).getString(SearchTask.LAST_QUERY, null));
 
         search = new Search();
     }
