@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface Pageable<T> extends Parcelable {
 
+    public String getQuery();
+
     public List<T> getResult();
 
     public Paging getPaging();

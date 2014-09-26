@@ -14,12 +14,19 @@ import java.util.List;
  */
 public class PageableImpl<T extends Parcelable> implements Pageable<T> {
 
-    protected List<T> result;
-    protected Paging paging;
+    private String query;
+    private List<T> result;
+    private Paging paging;
 
-    public PageableImpl(List<T> result, Paging paging) {
+    public PageableImpl(String query, List<T> result, Paging paging) {
+        this.query = query;
         this.result = result;
         this.paging = paging;
+    }
+
+    @Override
+    public String getQuery() {
+        return this.query;
     }
 
     @Override
@@ -40,6 +47,7 @@ public class PageableImpl<T extends Parcelable> implements Pageable<T> {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(query);
         parcel.writeList(result);
         parcel.writeParcelable(paging, 0);
     }
@@ -55,6 +63,8 @@ public class PageableImpl<T extends Parcelable> implements Pageable<T> {
     };
 
     public PageableImpl(Parcel in) {
+        this.query = in.readString();
+
         this.result = new ArrayList<T>();
         in.readList(this.result, getClass().getClassLoader());
 

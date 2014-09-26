@@ -46,6 +46,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         private static class Paging {
             public static final String TOTAL = "total";
             public static final String OFFSET = "offset";
+            public static final String LIMIT = "limit";
         }
 
         private static class Item {
@@ -61,12 +62,13 @@ public class ItemRepositoryImpl implements ItemRepository {
     public Pageable<Item> findByTitle(String title, Paging paging) {
         Pageable<Item> pageable = null;
 
-        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("prueba");
+        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("userAgent");
         try {
             String encoding = "UTF-8";
-            HttpGet get = new HttpGet("https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(title, encoding) + "&limit=" + paging.getLimit());
+            String resource = "https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(title, encoding) + "&limit=" + paging.getLimit() + "&offset=" + paging.getOffset();
+            HttpGet get = new HttpGet(resource);
 
-            Log.d(TAG, "Executing request against MeLi API...");
+            Log.d(TAG, "Executing request against MeLi API: " + resource);
             HttpResponse response = androidHttpClient.execute(get);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), encoding));
@@ -79,8 +81,9 @@ public class ItemRepositoryImpl implements ItemRepository {
             JSONObject jsonPaging = object.getJSONObject(Keys.Search.PAGING);
             paging.setOffset(jsonPaging.getInt(Keys.Paging.OFFSET));
             paging.setTotal(jsonPaging.getInt(Keys.Paging.TOTAL));
+            paging.setLimit(jsonPaging.getInt(Keys.Paging.LIMIT));
 
-            pageable = new PageableImpl<Item>(items, paging);
+            pageable = new PageableImpl<Item>(title, items, paging);
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Error encoding user input for make an HTTP request: " + e.getMessage());
         } catch (IOException e) {
