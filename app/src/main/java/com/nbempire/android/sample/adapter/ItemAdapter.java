@@ -14,6 +14,8 @@ import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.manager.ImageDownloadManager;
 import com.nbempire.android.sample.manager.impl.ImageDownloadManagerImpl;
 
+import java.util.List;
+
 /**
  * Created by nbarrios on 24/09/14.
  * <p/>
@@ -29,7 +31,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     private final LayoutInflater layoutInflater;
     private final ImageDownloadManager imageDownloadManager;
 
-    public ItemAdapter(Context context, Item[] items) {
+    public ItemAdapter(Context context, List<Item> items) {
         super(context, R.layout.item_in_list, items);
 
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

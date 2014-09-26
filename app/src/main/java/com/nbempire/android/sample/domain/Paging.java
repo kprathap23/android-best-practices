@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 public class Paging implements Parcelable {
 
-    private Integer total;
+    private int total;
     private int offset;
     private int limit;
 

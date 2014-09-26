@@ -1,6 +1,7 @@
 package com.nbempire.android.sample.component.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,8 +43,10 @@ public class SearchActivity extends Activity {
         search.setQuery(query.getText().toString());
         search.setPaging(new Paging(ITEMS_PER_PAGE));
 
-        Log.d(TAG, "Finding items for query: " + search.getQuery());
-        new SearchTask(this).execute(search);
+        Log.d(TAG, "Starting activity to display search results...");
+        Intent resultsIntent = new Intent(this, SearchResultsActivity.class);
+        resultsIntent.putExtra(SearchResultsActivity.Keys.SEARCH, search);
+        startActivity(resultsIntent);
     }
 
 }

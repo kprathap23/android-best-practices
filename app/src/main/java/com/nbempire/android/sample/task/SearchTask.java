@@ -2,11 +2,13 @@ package com.nbempire.android.sample.task;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ListView;
 
+import com.nbempire.android.sample.R;
+import com.nbempire.android.sample.adapter.ItemAdapter;
 import com.nbempire.android.sample.component.activity.SearchResultsActivity;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
@@ -28,6 +30,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     private final Activity context;
     private final SharedPreferences.Editor preferencesEditor;
+    private final ListView resultsListView;
 
     private ItemService itemService;
 
@@ -35,6 +38,8 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
         this.context = context;
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
         this.preferencesEditor = context.getPreferences(Context.MODE_PRIVATE).edit();
+
+        resultsListView = (ListView) context.findViewById(R.id.searchResultsListView);
     }
 
     @Override
@@ -49,10 +54,14 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     @Override
     protected void onPostExecute(Pageable<Item> pageable) {
-        Log.d(TAG, "Starting activity to display search results...");
+        context.getIntent().putExtra(SearchResultsActivity.Keys.PAGEABLE, pageable);
 
-        Intent resultsIntent = new Intent(context, SearchResultsActivity.class);
-        resultsIntent.putExtra(SearchResultsActivity.Keys.PAGE, pageable);
-        context.startActivity(resultsIntent);
+        ItemAdapter adapter = (ItemAdapter) resultsListView.getAdapter();
+        if (adapter == null) {
+            resultsListView.setAdapter(new ItemAdapter(context, pageable.getResult()));
+        } else {
+            adapter.clear();
+            adapter.addAll(pageable.getResult());
+        }
     }
 }
