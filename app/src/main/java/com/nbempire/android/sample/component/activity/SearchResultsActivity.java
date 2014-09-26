@@ -8,6 +8,7 @@ import android.widget.ListView;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.adapter.ItemAdapter;
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.util.Pageable;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class SearchResultsActivity extends Activity {
     private static final String TAG = "SearchResultsActivity";
 
     public class Keys {
-        public static final String RESULTS = "results";
+        public static final String PAGE = "page";
     }
 
     @Override
@@ -33,10 +34,12 @@ public class SearchResultsActivity extends Activity {
 
         ListView resultsListView = (ListView) findViewById(R.id.searchResultsListView);
 
-        List<Item> items = getIntent().getParcelableArrayListExtra(Keys.RESULTS);
+        Pageable<Item> pageable = getIntent().getParcelableExtra(Keys.PAGE);
+
+        List<Item> items = pageable.getResult();
         Item[] param = new Item[items.size()];
 
-        //  TODO : Check this new instance of ItemAdapter.
+        //  TODO : Check whether this new instance of ItemAdapter is necessary or not.
         resultsListView.setAdapter(new ItemAdapter(this, items.toArray(param)));
     }
 

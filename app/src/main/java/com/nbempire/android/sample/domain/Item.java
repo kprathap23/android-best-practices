@@ -47,7 +47,7 @@ public class Item implements Parcelable {
         this.thumbnail = thumbnail;
     }
 
-    //  From here everything is required to use Item as a Parcelable object.
+    //  Everything from here is required to use Item as a Parcelable object.
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
         public Item createFromParcel(Parcel in) {
             return new Item(in);
