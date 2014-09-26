@@ -5,7 +5,5 @@
     <string name="search_label">Ingresa tu búsqueda</string>
     <string name="search">Buscar</string>
     <string name="still_left">Aún quedan:</string>
-    <string name="previous_page">Anterior</string>
-    <string name="next_page">Siguiente</string>
 
 </resources>

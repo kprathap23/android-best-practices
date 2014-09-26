@@ -3,7 +3,6 @@ package com.nbempire.android.sample.component.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.domain.Search;
@@ -35,25 +34,6 @@ public class SearchResultsActivity extends Activity {
 
         Search search = getIntent().getParcelableExtra(Keys.SEARCH);
         Log.d(TAG, "Finding items for query: " + search.getQuery());
-        new SearchTask(this).execute(search);
-    }
-
-    public void loadPreviousResults(View view) {
-        pageable = getIntent().getParcelableExtra(Keys.PAGEABLE);
-        loadResultsForOffset(pageable.getPaging().getOffset() - pageable.getPaging().getLimit());
-    }
-
-    public void loadNextResults(View view) {
-        pageable = getIntent().getParcelableExtra(Keys.PAGEABLE);
-        loadResultsForOffset(pageable.getPaging().getOffset() + pageable.getPaging().getLimit());
-    }
-
-    private void loadResultsForOffset(int offset) {
-        Search search = new Search();
-        search.setQuery(pageable.getQuery());
-        search.setPaging(pageable.getPaging());
-        search.getPaging().setOffset(offset);
-
         new SearchTask(this).execute(search);
     }
 

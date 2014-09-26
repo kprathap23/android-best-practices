@@ -7,36 +7,8 @@
         android:id="@+id/searchResultsListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pagingButtons"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
-
-    <LinearLayout
-        android:id="@+id/pagingButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/previousPage"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/previous_page"
-            android:onClick="loadPreviousResults" />
-
-        <Button
-            android:id="@+id/nextPage"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/next_page"
-            android:onClick="loadNextResults" />
-    </LinearLayout>
 
 </RelativeLayout>
