@@ -61,6 +61,11 @@ public class ItemRepositoryImpl implements ItemRepository {
             public static final String THUMBNAIL = "thumbnail";
             public static final String INITIAL_QUANTITY = "initial_quantity";
             public static final String PICTURES = "pictures";
+
+            public class Picture {
+                public static final String SIZE = "size";
+                public static final String URL = "url";
+            }
         }
 
     }
@@ -166,12 +171,12 @@ public class ItemRepositoryImpl implements ItemRepository {
         for (int i = 0; i < jsonPictures.length(); i++) {
             JSONObject eachPicture = jsonPictures.getJSONObject(i);
 
-            String[] sizes = eachPicture.getString("size").split("x");
+            String[] sizes = eachPicture.getString(Keys.Item.Picture.SIZE).split("x");
             int surface = Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]);
             if (surface > maxSize) {
                 maxSize = surface;
 
-                url = eachPicture.getString("url");
+                url = eachPicture.getString(Keys.Item.Picture.URL);
             }
         }
 
