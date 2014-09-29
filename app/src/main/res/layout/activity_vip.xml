@@ -49,7 +49,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/item_image"
+        android:id="@+id/item_picture"
         android:layout_below="@+id/item_subtitle"
         android:layout_above="@+id/item_initial_quantity"
         android:layout_centerHorizontal="true"/>

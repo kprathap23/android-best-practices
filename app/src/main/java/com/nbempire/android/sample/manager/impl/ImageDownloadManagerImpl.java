@@ -15,7 +15,8 @@ import java.net.URL;
 /**
  * Created by nbarrios on 25/09/14.
  * <p/>
- * Some parts of the code was taken from the official <a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">Android documentation</a>
+ * Some parts of the code was taken from the official <a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html">Android
+ * documentation</a>
  */
 public class ImageDownloadManagerImpl implements ImageDownloadManager {
 
@@ -23,6 +24,8 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
      * Used for log messages.
      */
     private static final String TAG = "ImageDownloadManagerImpl";
+
+    private static ImageDownloadManagerImpl instance;
 
     private LruCache<String, Bitmap> memoryCache;
 
@@ -89,6 +92,9 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
     }
 
     public static ImageDownloadManagerImpl getInstance() {
-        return new ImageDownloadManagerImpl();
+        if (instance == null) {
+            instance = new ImageDownloadManagerImpl();
+        }
+        return instance;
     }
 }

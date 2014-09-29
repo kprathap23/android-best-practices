@@ -3,6 +3,7 @@ package com.nbempire.android.sample.component.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nbempire.android.sample.R;
@@ -37,6 +38,7 @@ public class VIPActivity extends Activity {
         viewHolder.price = (TextView) findViewById(R.id.item_price);
         viewHolder.initialQuantity = (TextView) findViewById(R.id.item_initial_quantity);
         viewHolder.availableQuantity = (TextView) findViewById(R.id.item_available_quantity);
+        viewHolder.picture = (ImageView) findViewById(R.id.item_picture);
 
         if (savedInstanceState == null) {
             new ItemTask(this, viewHolder).execute(item.getId());

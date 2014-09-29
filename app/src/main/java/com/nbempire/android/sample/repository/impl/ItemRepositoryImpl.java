@@ -60,6 +60,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             public static final String AVAILABLE_QUANTITY = "available_quantity";
             public static final String THUMBNAIL = "thumbnail";
             public static final String INITIAL_QUANTITY = "initial_quantity";
+            public static final String PICTURES = "pictures";
         }
 
     }
@@ -103,7 +104,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     public Item findById(String id) {
         AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance(HTTP_CLIENT_USER_AGENT);
-        String resource = MainKeys.MELI_API_HOST + "/items/" + id + "?attributes=id,title,price,subtitle,initial_quantity,available_quantity,thumbnail";
+        String resource = MainKeys.MELI_API_HOST + "/items/" + id + "?attributes=id,title,price,subtitle,initial_quantity,available_quantity,pictures";
 
         HttpGet get = new HttpGet(resource);
 
@@ -141,13 +142,37 @@ public class ItemRepositoryImpl implements ItemRepository {
         Item eachItem = new Item(eachObject.getString(Keys.Item.ID), parseJson(eachObject.getString(Keys.Item.TITLE)), eachObject.getLong(Keys.Item.PRICE));
         eachItem.setSubtitle(parseJson(eachObject.getString(Keys.Item.SUBTITLE)));
         eachItem.setAvailableQuantity(parseJson(eachObject.getString(Keys.Item.AVAILABLE_QUANTITY)));
-        eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
+
+        try {
+            eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
+        } catch (JSONException e) {
+            // Do nothing. It can be or not.
+        }
+
 
         if (getItemSpecificValues) {
             eachItem.setInitialQuantity(parseJson(eachObject.getString(Keys.Item.INITIAL_QUANTITY)));
+            eachItem.setMainPictureUrl(getMainPicture(eachObject.getJSONArray(Keys.Item.PICTURES)));
         }
 
         return eachItem;
+    }
+
+    private String getMainPicture(JSONArray jsonPictures) throws JSONException {
+        String url = null;
+        int maxSize = 0;
+
+
+        for (int i = 0; i < jsonPictures.length(); i++) {
+            JSONObject eachPicture = jsonPictures.getJSONObject(i);
+
+            String[] sizes = eachPicture.getString("size").split("x");
+            if (Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]) > maxSize) {
+                url = eachPicture.getString("url");
+            }
+        }
+
+        return url;
     }
 
     private static String parseJson(String value) {

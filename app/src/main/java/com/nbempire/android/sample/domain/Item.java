@@ -18,6 +18,7 @@ public class Item implements Parcelable {
     private String availableQuantity;
     private String thumbnail;
     private String initialQuantity;
+    private String mainPictureUrl;
 
     public Item(String id, String title, long price) {
         this.id = id;
@@ -67,6 +68,14 @@ public class Item implements Parcelable {
 
     public long getPrice() {
         return price;
+    }
+
+    public void setMainPictureUrl(String mainPictureUrl) {
+        this.mainPictureUrl = mainPictureUrl;
+    }
+
+    public String getMainPictureUrl() {
+        return mainPictureUrl;
     }
 
     //  Everything from here is required to use Item as a Parcelable object.

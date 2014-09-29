@@ -3,10 +3,12 @@ package com.nbempire.android.sample.task;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nbempire.android.sample.component.activity.VIPActivity;
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.manager.impl.ImageDownloadManagerImpl;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
@@ -31,6 +33,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
         public TextView price;
         public TextView initialQuantity;
         public TextView availableQuantity;
+        public ImageView picture;
     }
 
     public ItemTask(Activity context, ItemViewHolder viewHolder) {
@@ -48,6 +51,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
 
     @Override
     protected void onPostExecute(Item item) {
+        ImageDownloadManagerImpl.getInstance().load(item.getMainPictureUrl(), viewHolder.picture);
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
         viewHolder.price.setText(String.valueOf(item.getPrice()));
