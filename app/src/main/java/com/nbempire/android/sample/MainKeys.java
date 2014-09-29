@@ -5,5 +5,6 @@ package com.nbempire.android.sample;
  */
 public class MainKeys {
 
+    public static final String MELI_API_HOST = "https://api.mercadolibre.com";
     public static final String APP_SHARED_PREFERENCES = "app";
 }

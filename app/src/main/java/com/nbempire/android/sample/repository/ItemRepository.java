@@ -9,5 +9,7 @@ import com.nbempire.android.sample.util.Pageable;
  */
 public interface ItemRepository {
 
-    public Pageable<Item> findByTitle(String title, Paging paging);
+    Pageable<Item> findByTitle(String title, Paging paging);
+
+    Item findById(String id);
 }

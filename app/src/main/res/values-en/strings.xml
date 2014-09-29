@@ -5,5 +5,8 @@
     <string name="search_label">Enter your query</string>
     <string name="search">Search</string>
     <string name="still_left">Left:</string>
+    <string name="initial_quantity">Initial quantity: </string>
+    <string name="available_quantity">In sale: </string>
+    <string name="dollar_sign">$</string>
 
 </resources>

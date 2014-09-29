@@ -5,5 +5,8 @@
     <string name="search_label">Ingresa tu búsqueda</string>
     <string name="search">Buscar</string>
     <string name="still_left">Aún quedan:</string>
+    <string name="initial_quantity">Cantidad inicial: </string>
+    <string name="available_quantity">En venta: </string>
+    <string name="dollar_sign">$</string>
 
 </resources>

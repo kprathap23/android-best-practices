@@ -6,16 +6,20 @@ import android.os.Parcelable;
 /**
  * Created by nbarrios on 24/09/14.
  * <p/>
- * Some parts of the code was taken from the official <a href="http://developer.android.com/reference/android/os/Parcelable.html">Android documentation</a>
+ * Some parts of the code was taken from the official <a href="http://developer.android.com/reference/android/os/Parcelable.html">Android
+ * documentation</a>
  */
 public class Item implements Parcelable {
 
+    private String id;
     private String title;
     private String subtitle;
     private String availableQuantity;
     private String thumbnail;
+    private String initialQuantity;
 
-    public Item(String title) {
+    public Item(String id, String title) {
+        this.id = id;
         this.title = title;
     }
 
@@ -47,6 +51,18 @@ public class Item implements Parcelable {
         this.thumbnail = thumbnail;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setInitialQuantity(String initialQuantity) {
+        this.initialQuantity = initialQuantity;
+    }
+
+    public String getInitialQuantity() {
+        return initialQuantity;
+    }
+
     //  Everything from here is required to use Item as a Parcelable object.
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
         public Item createFromParcel(Parcel in) {
@@ -65,15 +81,19 @@ public class Item implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
         parcel.writeString(title);
         parcel.writeString(subtitle);
+        parcel.writeString(initialQuantity);
         parcel.writeString(availableQuantity);
         parcel.writeString(thumbnail);
     }
 
     public Item(Parcel in) {
+        this.id = in.readString();
         this.title = in.readString();
         this.subtitle = in.readString();
+        this.initialQuantity = in.readString();
         this.availableQuantity = in.readString();
         this.thumbnail = in.readString();
     }

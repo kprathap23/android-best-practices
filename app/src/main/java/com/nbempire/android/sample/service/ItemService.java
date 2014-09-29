@@ -9,5 +9,7 @@ import com.nbempire.android.sample.util.Pageable;
  */
 public interface ItemService {
 
-    public Pageable<Item> find(Search search);
+    Pageable<Item> find(Search search);
+
+    Item findById(String id);
 }

@@ -3,6 +3,7 @@ package com.nbempire.android.sample.repository.impl;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
+import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.repository.ItemRepository;
@@ -32,6 +33,8 @@ public class ItemRepositoryImpl implements ItemRepository {
      * Used for log messages.
      */
     private static final String TAG = "ItemRepositoryImpl";
+    private static final String ENCODING = "UTF-8";
+    private static final String HTTP_CLIENT_USER_AGENT = "userAgent";
 
     /**
      * Existent keys on API.
@@ -50,10 +53,12 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
 
         private static class Item {
+            public static final String ID = "id";
             public static final String TITLE = "title";
             public static final String SUBTITLE = "subtitle";
             public static final String AVAILABLE_QUANTITY = "available_quantity";
             public static final String THUMBNAIL = "thumbnail";
+            public static final String INITIAL_QUANTITY = "initial_quantity";
         }
 
     }
@@ -62,16 +67,15 @@ public class ItemRepositoryImpl implements ItemRepository {
     public Pageable<Item> findByTitle(String title, Paging paging) {
         Pageable<Item> pageable = null;
 
-        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("userAgent");
+        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance(HTTP_CLIENT_USER_AGENT);
         try {
-            String encoding = "UTF-8";
-            String resource = "https://api.mercadolibre.com/sites/MLA/search?q=" + URLEncoder.encode(title, encoding) + "&limit=" + paging.getLimit() + "&offset=" + paging.getOffset();
+            String resource = MainKeys.MELI_API_HOST + "/sites/MLA/search?q=" + URLEncoder.encode(title, ENCODING) + "&limit=" + paging.getLimit() + "&offset=" + paging.getOffset() + "&attributes=paging,results";
             HttpGet get = new HttpGet(resource);
 
             Log.d(TAG, "Executing request against MeLi API: " + resource);
             HttpResponse response = androidHttpClient.execute(get);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), encoding));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), ENCODING));
             JSONObject object = new JSONObject(reader.readLine());
 
             androidHttpClient.close();
@@ -95,21 +99,54 @@ public class ItemRepositoryImpl implements ItemRepository {
         return pageable;
     }
 
+    @Override
+    public Item findById(String id) {
+        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance(HTTP_CLIENT_USER_AGENT);
+        String resource = MainKeys.MELI_API_HOST + "/items/" + id + "?attributes=id,title,price,subtitle,initial_quantity,available_quantity,thumbnail";
+
+        HttpGet get = new HttpGet(resource);
+
+        Log.d(TAG, "Executing request against MeLi API: " + resource);
+        Item item = null;
+        try {
+            HttpResponse response = androidHttpClient.execute(get);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), ENCODING));
+            JSONObject jsonObject = new JSONObject(reader.readLine());
+
+            androidHttpClient.close();
+
+            item = parseJsonItem(jsonObject, true);
+        } catch (IOException e) {
+            Log.e(TAG, "Error executing GET: " + e.getMessage());
+        } catch (JSONException e) {
+            Log.e(TAG, "Error parsing response: " + e.getMessage());
+        }
+
+        return item;
+    }
+
     private List<Item> parseJsonItems(JSONArray results) throws JSONException {
         List<Item> items = new ArrayList<Item>();
 
         for (int i = 0; i < results.length(); i++) {
-            JSONObject eachObject = results.getJSONObject(i);
-
-            Item eachItem = new Item(parseJson(eachObject.getString(Keys.Item.TITLE)));
-            eachItem.setSubtitle(parseJson(eachObject.getString(Keys.Item.SUBTITLE)));
-            eachItem.setAvailableQuantity(parseJson(eachObject.getString(Keys.Item.AVAILABLE_QUANTITY)));
-            eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
-
-            items.add(eachItem);
+            items.add(parseJsonItem(results.getJSONObject(i), false));
         }
 
         return items;
+    }
+
+    private Item parseJsonItem(JSONObject eachObject, boolean getItemSpecificValues) throws JSONException {
+        Item eachItem = new Item(eachObject.getString(Keys.Item.ID), parseJson(eachObject.getString(Keys.Item.TITLE)));
+        eachItem.setSubtitle(parseJson(eachObject.getString(Keys.Item.SUBTITLE)));
+        eachItem.setAvailableQuantity(parseJson(eachObject.getString(Keys.Item.AVAILABLE_QUANTITY)));
+        eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
+
+        if (getItemSpecificValues) {
+            eachItem.setInitialQuantity(parseJson(eachObject.getString(Keys.Item.INITIAL_QUANTITY)));
+        }
+
+        return eachItem;
     }
 
     private static String parseJson(String value) {

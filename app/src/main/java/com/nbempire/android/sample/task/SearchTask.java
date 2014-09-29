@@ -45,6 +45,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     @Override
     protected Pageable<Item> doInBackground(Search... searches) {
+        Log.v(TAG, "doInBackground...");
         Search search = searches[0];
 
         Log.d(TAG, "Storing last search: " + search.getQuery());

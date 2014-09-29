@@ -21,4 +21,9 @@ public class ItemServiceImpl implements ItemService {
     public Pageable<Item> find(Search search) {
         return itemRepository.findByTitle(search.getQuery(), search.getPaging());
     }
+
+    @Override
+    public Item findById(String id) {
+        return itemRepository.findById(id);
+    }
 }
