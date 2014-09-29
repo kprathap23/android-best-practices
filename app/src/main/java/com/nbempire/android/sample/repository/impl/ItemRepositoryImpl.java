@@ -167,7 +167,10 @@ public class ItemRepositoryImpl implements ItemRepository {
             JSONObject eachPicture = jsonPictures.getJSONObject(i);
 
             String[] sizes = eachPicture.getString("size").split("x");
-            if (Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]) > maxSize) {
+            int surface = Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]);
+            if (surface > maxSize) {
+                maxSize = surface;
+
                 url = eachPicture.getString("url");
             }
         }
