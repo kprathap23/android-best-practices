@@ -13,14 +13,16 @@ public class Item implements Parcelable {
 
     private String id;
     private String title;
+    private long price;
     private String subtitle;
     private String availableQuantity;
     private String thumbnail;
     private String initialQuantity;
 
-    public Item(String id, String title) {
+    public Item(String id, String title, long price) {
         this.id = id;
         this.title = title;
+        this.price = price;
     }
 
     public String getTitle() {
@@ -63,6 +65,10 @@ public class Item implements Parcelable {
         return initialQuantity;
     }
 
+    public long getPrice() {
+        return price;
+    }
+
     //  Everything from here is required to use Item as a Parcelable object.
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
         public Item createFromParcel(Parcel in) {
@@ -83,6 +89,7 @@ public class Item implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(title);
+        parcel.writeLong(price);
         parcel.writeString(subtitle);
         parcel.writeString(initialQuantity);
         parcel.writeString(availableQuantity);
@@ -92,6 +99,7 @@ public class Item implements Parcelable {
     public Item(Parcel in) {
         this.id = in.readString();
         this.title = in.readString();
+        this.price = in.readLong();
         this.subtitle = in.readString();
         this.initialQuantity = in.readString();
         this.availableQuantity = in.readString();

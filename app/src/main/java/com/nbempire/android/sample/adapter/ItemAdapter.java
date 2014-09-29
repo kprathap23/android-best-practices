@@ -100,22 +100,22 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Item cadaItem = getItem(position);
+        Item eachItem = getItem(position);
 
         if (viewHolder.thumbnail != null) {
-            imageDownloadManager.load(cadaItem.getThumbnail(), viewHolder.thumbnail);
+            imageDownloadManager.load(eachItem.getThumbnail(), viewHolder.thumbnail);
         }
 
         if (viewHolder.title != null) {
-            viewHolder.title.setText(cadaItem.getTitle());
+            viewHolder.title.setText(eachItem.getTitle() + " ($" + eachItem.getPrice() + ")");
         }
 
         if (viewHolder.subtitle != null) {
-            viewHolder.subtitle.setText(cadaItem.getSubtitle());
+            viewHolder.subtitle.setText(eachItem.getSubtitle());
         }
 
         if (viewHolder.availableQuantity != null) {
-            viewHolder.availableQuantity.setText(cadaItem.getAvailableQuantity());
+            viewHolder.availableQuantity.setText(eachItem.getAvailableQuantity());
         }
 
         return convertView;

@@ -55,6 +55,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         private static class Item {
             public static final String ID = "id";
             public static final String TITLE = "title";
+            public static final String PRICE = "price";
             public static final String SUBTITLE = "subtitle";
             public static final String AVAILABLE_QUANTITY = "available_quantity";
             public static final String THUMBNAIL = "thumbnail";
@@ -137,7 +138,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     private Item parseJsonItem(JSONObject eachObject, boolean getItemSpecificValues) throws JSONException {
-        Item eachItem = new Item(eachObject.getString(Keys.Item.ID), parseJson(eachObject.getString(Keys.Item.TITLE)));
+        Item eachItem = new Item(eachObject.getString(Keys.Item.ID), parseJson(eachObject.getString(Keys.Item.TITLE)), eachObject.getLong(Keys.Item.PRICE));
         eachItem.setSubtitle(parseJson(eachObject.getString(Keys.Item.SUBTITLE)));
         eachItem.setAvailableQuantity(parseJson(eachObject.getString(Keys.Item.AVAILABLE_QUANTITY)));
         eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));

@@ -46,7 +46,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
     protected void onPostExecute(Item item) {
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
-//        viewHolder.price.append("");
+        viewHolder.price.append(String.valueOf(item.getPrice()));
         viewHolder.initialQuantity.append(item.getInitialQuantity());
         viewHolder.availableQuantity.append(item.getAvailableQuantity());
     }
