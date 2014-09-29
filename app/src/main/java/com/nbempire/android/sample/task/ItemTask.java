@@ -1,9 +1,11 @@
 package com.nbempire.android.sample.task;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.nbempire.android.sample.component.activity.VIPActivity;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
@@ -19,6 +21,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
      */
     private static final String TAG = "ItemTask";
 
+    private final Activity context;
     private final ItemViewHolder viewHolder;
     private final ItemService itemService;
 
@@ -30,7 +33,8 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
         public TextView availableQuantity;
     }
 
-    public ItemTask(ItemViewHolder viewHolder) {
+    public ItemTask(Activity context, ItemViewHolder viewHolder) {
+        this.context = context;
         this.viewHolder = viewHolder;
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
     }
@@ -46,8 +50,10 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
     protected void onPostExecute(Item item) {
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
-        viewHolder.price.append(String.valueOf(item.getPrice()));
+        viewHolder.price.setText(String.valueOf(item.getPrice()));
         viewHolder.initialQuantity.append(item.getInitialQuantity());
         viewHolder.availableQuantity.append(item.getAvailableQuantity());
+
+        context.getIntent().putExtra(VIPActivity.Keys.ITEM, item);
     }
 }
