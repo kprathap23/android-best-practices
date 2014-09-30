@@ -1,9 +1,9 @@
 package com.nbempire.android.sample.component.service;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
 /**
@@ -19,47 +19,14 @@ public class ItemTrackerService extends IntentService {
      */
     private static final String TAG = "ItemTrackerService";
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.v(TAG, "onStartCommand...");
-        return super.onStartCommand(intent, flags, startId);
+    public static class Action {
+        public static final String CHECK_ITEMS = "com.nbempire.android.sample.component.service.action.CHECK_ITEMS";
+        private static final String TRACK_ITEM = "com.nbempire.android.sample.component.service.action.TRACK_ITEM";
+        private static final String STOP_TRACKING_ITEM = "com.nbempire.android.sample.component.service.action.STOP_TRACKING_ITEM";
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.v(TAG, "onBind...");
-        return super.onBind(intent);
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.v(TAG, "onDestroy...");
-        super.onDestroy();
-    }
-
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    public static final String ACTION_CHECK_ITEMS = "com.nbempire.android.sample.component.service.action.CHECK_ITEMS";
-    private static final String ACTION_FOO = "com.nbempire.android.sample.component.service.action.FOO";
-
-    // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.nbempire.android.sample.component.service.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.nbempire.android.sample.component.service.extra.PARAM2";
-
-    /**
-     * Starts this service to perform action Foo with the given parameters. If the service is
-     * already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, ItemTrackerService.class);
-        intent.setAction(ACTION_FOO);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
+    private static final String ITEM_ID = "com.nbempire.android.sample.component.service.extra.ITEM_ID";
+    private static final String ITEM_PRICE = "com.nbempire.android.sample.component.service.extra.ITEM_PRICE";
 
     public ItemTrackerService() {
         super("ItemTrackerService");
@@ -72,12 +39,15 @@ public class ItemTrackerService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
 
-            if (ACTION_CHECK_ITEMS.equals(action)) {
+            if (Action.CHECK_ITEMS.equals(action)) {
                 handleActionCheckItems();
-            } else if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
+            } else if (Action.TRACK_ITEM.equals(action)) {
+                handleActionTrackItem(intent.getStringExtra(ITEM_ID), intent.getLongExtra(ITEM_PRICE, 0));
+            } else if (Action.STOP_TRACKING_ITEM.equals(action)) {
+                handleActionStopTrackingItem(intent.getStringExtra(ITEM_ID));
+            } else {
+                Log.e(TAG, "No action mapped for value: " + action);
+                //  TODO : Should I do something here?
             }
         }
     }
@@ -89,8 +59,41 @@ public class ItemTrackerService extends IntentService {
     /**
      * Handle action Foo in the provided background thread with the provided parameters.
      */
-    private void handleActionFoo(String param1, String param2) {
-        // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void handleActionTrackItem(String id, Long price) {
+        Log.v(TAG, "handleActionTrackItem... id: " + id + ", price: " + price);
     }
+
+    private void handleActionStopTrackingItem(String id) {
+        Log.v(TAG, "handleActionStopTrackingItem... id: " + id);
+    }
+
+    //  TODO : Refactor public methods...
+
+    /**
+     * Starts this service to perform action track item with the given parameters. If the service is
+     * already performing a task this action will be queued.
+     *
+     * @see IntentService
+     */
+    public static void startActionTrackItem(Context context, String id, Long price) {
+        Intent intent = new Intent(context, ItemTrackerService.class);
+        intent.setAction(Action.TRACK_ITEM);
+        intent.putExtra(ITEM_ID, id);
+        intent.putExtra(ITEM_PRICE, price);
+        context.startService(intent);
+    }
+
+    /**
+     * Starts this service to perform action stop tracking item with the given parameters. If the
+     * service is already performing a task this action will be queued.
+     *
+     * @see IntentService
+     */
+    public static void startActionStopTrackingItem(Activity context, String id) {
+        Intent intent = new Intent(context, ItemTrackerService.class);
+        intent.setAction(Action.STOP_TRACKING_ITEM);
+        intent.putExtra(ITEM_ID, id);
+        context.startService(intent);
+    }
+
 }

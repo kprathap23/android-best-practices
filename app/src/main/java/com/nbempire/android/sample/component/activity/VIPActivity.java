@@ -3,10 +3,13 @@ package com.nbempire.android.sample.component.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.nbempire.android.sample.R;
+import com.nbempire.android.sample.component.service.ItemTrackerService;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.task.ItemTask;
 
@@ -23,6 +26,11 @@ public class VIPActivity extends Activity {
 
     private ItemTask.ItemViewHolder viewHolder;
     private Item item;
+    private final Activity context;
+
+    public VIPActivity() {
+        this.context = this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,19 @@ public class VIPActivity extends Activity {
         if (item.getInitialQuantity() != null) {
             viewHolder.initialQuantity.append(item.getInitialQuantity());
         }
+
+        Switch switchView = (Switch) findViewById(R.id.track_item_switch);
+        switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.v(TAG, "onCheckedChanged...");
+                if (b) {
+                    ItemTrackerService.startActionTrackItem(context, item.getId(), item.getPrice());
+                } else {
+                    ItemTrackerService.startActionStopTrackingItem(context, item.getId());
+                }
+            }
+        });
     }
 
     @Override
