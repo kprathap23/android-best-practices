@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.fragment.SearchFragment;
+import com.nbempire.android.sample.component.service.ItemTrackerService;
 import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.task.SearchTask;
@@ -37,6 +38,11 @@ public class SearchActivity extends Activity {
         query.setText(getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, MODE_PRIVATE).getString(SearchTask.LAST_QUERY, null));
 
         search = new Search();
+
+        if (!ItemTrackerService.isStarted()) {
+            Log.d(TAG, ItemTrackerService.class.getName() + " is not started. Starting it...");
+            startService(new Intent(this, ItemTrackerService.class));
+        }
     }
 
     public void findItems(View view) {
