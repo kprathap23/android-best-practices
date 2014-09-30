@@ -133,7 +133,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         search.setPaging(pageable.getPaging());
         search.getPaging().setOffset(offset);
 
-        new SearchTask(context).execute(search);
+        new SearchTask(context, this).execute(search);
     }
 
     /**

@@ -4,89 +4,36 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.nbempire.android.sample.R;
-import com.nbempire.android.sample.adapter.ItemAdapter;
+import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Item;
-import com.nbempire.android.sample.domain.Search;
-import com.nbempire.android.sample.task.SearchTask;
-import com.nbempire.android.sample.util.Pageable;
-
-import java.util.ArrayList;
 
 /**
  * Created by nbarrios on 24/09/14.
  */
-public class SearchResultsActivity extends Activity {
+public class SearchResultsActivity extends Activity implements SearchFragment.OnFragmentInteractionListener {
 
     /**
      * Used for log messages.
      */
     private static final String TAG = "SearchResultsActivity";
 
-    private ItemAdapter itemAdapter;
-    private Activity context;
-
-    public class Keys {
-        public static final String SEARCH = "search";
-        public static final String PAGEABLE = "pageable";
-        public static final String ITEM_ADAPTER = "itemAdapter";
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "onCreate...");
         setContentView(R.layout.activity_search_results);
-
-        this.context = this;
-
-        ListView resultsListView = (ListView) findViewById(R.id.searchResultsListView);
-
-        if (itemAdapter == null) {
-            itemAdapter = new ItemAdapter(this);
-        }
-        resultsListView.setAdapter(itemAdapter);
-        resultsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Item item = (Item) adapterView.getItemAtPosition(i);
-                Log.i(TAG, "Opening VIP for item: " + item.getTitle());
-
-                Intent vipIntent = new Intent(context, VIPActivity.class);
-                vipIntent.putExtra(VIPActivity.Keys.ITEM, item);
-                startActivity(vipIntent);
-            }
-        });
-
-        if (savedInstanceState == null) {
-            Search search = getIntent().getParcelableExtra(Keys.SEARCH);
-            Log.d(TAG, "Finding items for query: " + search.getQuery());
-            new SearchTask(this).execute(search);
-        }
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Log.v(TAG, "onSaveInstanceState...");
-        outState.putBundle(Keys.ITEM_ADAPTER, itemAdapter.getState());
+    public void onSearchItemSelected(Item item) {
+        Log.v(TAG, "onSearchItemSelected...");
+        Log.i(TAG, "Opening VIP for item: " + item.getTitle());
 
-        super.onSaveInstanceState(outState);
+        Intent vipIntent = new Intent(this, VIPActivity.class);
+        vipIntent.putExtra(VIPActivity.Keys.ITEM, item);
+        startActivity(vipIntent);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.v(TAG, "onRestoreInstanceState...");
-
-        Bundle itemAdapterState = savedInstanceState.getBundle(Keys.ITEM_ADAPTER);
-        ArrayList<Item> results = itemAdapterState.getParcelableArrayList(ItemAdapter.Keys.RESULTS);
-        itemAdapter.addAll(results);
-        itemAdapter.setLoadedPages(itemAdapterState.getIntArray(ItemAdapter.Keys.LOADED_PAGES_KEYS), itemAdapterState.getBooleanArray(ItemAdapter.Keys.LOADED_PAGES_VALUES));
-        itemAdapter.setPageable((Pageable<Item>) itemAdapterState.getParcelable(ItemAdapter.Keys.PAGEABLE));
-        Log.d(TAG, "Total items in adapter: " + itemAdapter.getCount());
-    }
 }

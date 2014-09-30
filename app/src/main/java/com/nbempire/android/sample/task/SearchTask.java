@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.nbempire.android.sample.MainKeys;
-import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.adapter.ItemAdapter;
-import com.nbempire.android.sample.component.activity.SearchResultsActivity;
+import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
@@ -31,16 +29,15 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     private final Activity context;
     private final SharedPreferences.Editor preferencesEditor;
-    private final ListView resultsListView;
+    private final ItemAdapter itemAdapter;
 
     private ItemService itemService;
 
-    public SearchTask(Activity context) {
+    public SearchTask(Activity context, ItemAdapter itemAdapter) {
         this.context = context;
         this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
         this.preferencesEditor = context.getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-
-        resultsListView = (ListView) context.findViewById(R.id.searchResultsListView);
+        this.itemAdapter = itemAdapter;
     }
 
     @Override
@@ -56,11 +53,10 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     @Override
     protected void onPostExecute(Pageable<Item> pageable) {
-        context.getIntent().putExtra(SearchResultsActivity.Keys.PAGEABLE, pageable);
+        context.getIntent().putExtra(SearchFragment.Keys.PAGEABLE, pageable);
 
-        ItemAdapter adapter = (ItemAdapter) resultsListView.getAdapter();
-        adapter.setPageable(pageable);
-        adapter.addAll(pageable.getResult());
-        Log.d(TAG, "Total items in adapter: " + adapter.getCount());
+        itemAdapter.setPageable(pageable);
+        itemAdapter.addAll(pageable.getResult());
+        Log.d(TAG, "Total items in adapter: " + itemAdapter.getCount());
     }
 }
