@@ -18,7 +18,6 @@ import java.util.ArrayList;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * <p/>
  * Activities containing this fragment MUST implement the Callbacks interface.
  */
 public class SearchFragment extends ListFragment {
@@ -36,19 +35,6 @@ public class SearchFragment extends ListFragment {
         public static final String SEARCH = "search";
         public static final String PAGEABLE = "pageable";
         public static final String ITEM_ADAPTER = "itemAdapter";
-    }
-
-    public static SearchFragment newInstance() {
-        Log.v(TAG, "newInstance...");
-        return new SearchFragment();
-    }
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
-     * screen orientation changes).
-     */
-    public SearchFragment() {
-        Log.v(TAG, "SearchFragment...");
     }
 
     @Override
