@@ -50,6 +50,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         serviceIntent.setAction(ItemTrackerService.Action.CHECK_ITEMS);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 15000, MainKeys.CHECK_TRACKED_ITEMS_INTERVAL, PendingIntent.getService(context, 1, serviceIntent, 0));
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 20000, MainKeys.CHECK_TRACKED_ITEMS_INTERVAL, PendingIntent.getService(context, 1, serviceIntent, 0));
     }
 }
