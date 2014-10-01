@@ -202,7 +202,12 @@ public class ItemRepositoryImpl implements ItemRepository {
         values.put(ItemContract.ItemEntry.Column.PRICE, price);
         values.put(ItemContract.ItemEntry.Column.STOP_TIME, stopTime);
 
-        db.insert(ItemContract.ItemEntry.TABLE_NAME, null, values);
+        long result = db.insert(ItemContract.ItemEntry.TABLE_NAME, null, values);
+        if (result != -1) {
+            Log.i(TAG, "Item stored: " + id);
+        } else {
+            Log.e(TAG, "An error ocurred while storing item: " + id);
+        }
     }
 
     @Override
@@ -216,7 +221,8 @@ public class ItemRepositoryImpl implements ItemRepository {
         String[] selectionArgs = {String.valueOf(id)};
 
         // Issue SQL statement.
-        db.delete(ItemContract.ItemEntry.TABLE_NAME, selection, selectionArgs);
+        int affectedRows = db.delete(ItemContract.ItemEntry.TABLE_NAME, selection, selectionArgs);
+        Log.i(TAG, "Removed rows: " + affectedRows);
     }
 
     private List<Item> parseJsonItems(JSONArray results) throws JSONException {
