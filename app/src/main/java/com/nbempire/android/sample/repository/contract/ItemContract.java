@@ -18,6 +18,7 @@ public class ItemContract {
             "CREATE TABLE " + ItemEntry.TABLE_NAME + " (" +
                     ItemEntry._ID + " INTEGER PRIMARY KEY," +
                     ItemEntry.Column.ID + TEXT_TYPE + COMMA_SEP +
+                    ItemEntry.Column.TITLE + TEXT_TYPE + COMMA_SEP +
                     ItemEntry.Column.PRICE + INTEGER_TYPE + COMMA_SEP +
                     ItemEntry.Column.STOP_TIME + INTEGER_TYPE +
                     ")";
@@ -34,6 +35,7 @@ public class ItemContract {
             public static final String ID = "id";
             public static final String PRICE = "price";
             public static final String STOP_TIME = "stopTime";
+            public static final String TITLE = "title";
         }
     }
 }

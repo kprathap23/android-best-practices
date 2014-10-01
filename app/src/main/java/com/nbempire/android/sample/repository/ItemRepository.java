@@ -23,8 +23,9 @@ public interface ItemRepository {
      * @param id
      * @param price
      * @param stopTime
+     * @param title
      */
-    void save(String id, Long price, Long stopTime);
+    void save(String id, Long price, Long stopTime, String title);
 
     /**
      * Remove this item from local storage.

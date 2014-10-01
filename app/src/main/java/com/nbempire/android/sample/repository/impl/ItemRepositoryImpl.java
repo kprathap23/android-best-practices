@@ -157,12 +157,13 @@ public class ItemRepositoryImpl implements ItemRepository {
         String[] projection = {
                 ItemContract.ItemEntry._ID,
                 ItemContract.ItemEntry.Column.ID,
+                ItemContract.ItemEntry.Column.TITLE,
                 ItemContract.ItemEntry.Column.PRICE,
                 ItemContract.ItemEntry.Column.STOP_TIME
         };
 
         // How you want the results sorted in the resulting Cursor
-        String sortOrder = ItemContract.ItemEntry.Column.ID + " ASC";
+        String sortOrder = ItemContract.ItemEntry.Column.TITLE + " ASC";
 
         Cursor cursor = db.query(
                 ItemContract.ItemEntry.TABLE_NAME,  // The table to query
@@ -180,10 +181,11 @@ public class ItemRepositoryImpl implements ItemRepository {
         } else {
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.TITLE));
                 Long price = cursor.getLong(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.PRICE));
                 Date stopTime = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.STOP_TIME)));
 
-                items.add(new Item(id, price, stopTime));
+                items.add(new Item(id, title, price, stopTime));
             }
         }
 
@@ -191,11 +193,12 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public void save(String id, Long price, Long stopTime) {
+    public void save(String id, Long price, Long stopTime, String title) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(ItemContract.ItemEntry.Column.ID, id);
+        values.put(ItemContract.ItemEntry.Column.TITLE, title);
         values.put(ItemContract.ItemEntry.Column.PRICE, price);
         values.put(ItemContract.ItemEntry.Column.STOP_TIME, stopTime);
 

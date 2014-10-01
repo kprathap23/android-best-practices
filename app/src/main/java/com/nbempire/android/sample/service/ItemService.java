@@ -17,9 +17,11 @@ public interface ItemService {
 
     List<Item> getTrackedItems();
 
-    void trackItem(String id, Long price, Long stopTime);
+    void trackItem(String id, Long price, Long stopTime, String title);
 
     boolean isTracked(String id);
 
     void stopTracking(String id);
+
+    boolean checkTrackedItem(Item item);
 }

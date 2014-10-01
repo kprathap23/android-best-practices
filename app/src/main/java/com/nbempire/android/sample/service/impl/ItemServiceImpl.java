@@ -52,9 +52,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void trackItem(String id, Long price, Long stopTime) {
+    public void trackItem(String id, Long price, Long stopTime, String title) {
         Log.v(TAG, "trackItem... id: " + id + ", price: " + price + ", milliseconds: " + stopTime);
-        itemRepository.save(id, price, stopTime);
+        itemRepository.save(id, price, stopTime, title);
 
         SharedPreferences preferences = context.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Set<String> ids = preferences.getStringSet(MainKeys.TRACKED_ITEMS_ID, new HashSet<String>());
@@ -81,4 +81,12 @@ public class ItemServiceImpl implements ItemService {
         // Remove item from local storage too.
         itemRepository.remove(id);
     }
+
+    @Override
+    public boolean checkTrackedItem(Item item) {
+        Item remoteItem = itemRepository.findById(item.getId());
+
+        return remoteItem.getPrice() != item.getPrice();
+    }
+
 }

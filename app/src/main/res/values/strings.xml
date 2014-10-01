@@ -9,5 +9,7 @@
     <string name="available_quantity">En venta: </string>
     <string name="dollar_sign">$</string>
     <string name="track_item">Seguir publicación</string>
+    <string name="an_interesting_item_near_to_finish">Un item por vencer</string>
+    <string name="an_interesting_item_has_been_updated">Un item a sido actualizado</string>
 
 </resources>

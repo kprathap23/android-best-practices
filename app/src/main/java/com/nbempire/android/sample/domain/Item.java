@@ -29,10 +29,10 @@ public class Item implements Parcelable {
         this.price = price;
     }
 
-    public Item(String id, Long price, Date stopTime) {
+    public Item(String id, String title, long price, Date stopTime) {
         this.id = id;
+        this.title = title;
         this.price = price;
-        this.stopTime = stopTime;
     }
 
     public String getTitle() {
@@ -120,7 +120,7 @@ public class Item implements Parcelable {
         parcel.writeString(initialQuantity);
         parcel.writeString(availableQuantity);
         parcel.writeString(thumbnail);
-        parcel.writeLong(stopTime != null ? stopTime.getTime() : null);
+        parcel.writeLong(stopTime != null ? stopTime.getTime() : 0);
     }
 
     public Item(Parcel in) {

@@ -9,5 +9,7 @@
     <string name="available_quantity">In sale: </string>
     <string name="dollar_sign">$</string>
     <string name="track_item">Track item</string>
+    <string name="an_interesting_item_near_to_finish">An item is close to finish</string>
+    <string name="an_interesting_item_has_been_updated">An item has been updated</string>
 
 </resources>
