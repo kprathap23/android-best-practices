@@ -3,6 +3,8 @@ package com.nbempire.android.sample.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Created by nbarrios on 24/09/14.
  * <p/>
@@ -19,6 +21,7 @@ public class Item implements Parcelable {
     private String thumbnail;
     private String initialQuantity;
     private String mainPictureUrl;
+    private Date stopTime;
 
     public Item(String id, String title, long price) {
         this.id = id;
@@ -78,6 +81,14 @@ public class Item implements Parcelable {
         return mainPictureUrl;
     }
 
+    public Date getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(Date stopTime) {
+        this.stopTime = stopTime;
+    }
+
     //  Everything from here is required to use Item as a Parcelable object.
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
         public Item createFromParcel(Parcel in) {
@@ -103,6 +114,7 @@ public class Item implements Parcelable {
         parcel.writeString(initialQuantity);
         parcel.writeString(availableQuantity);
         parcel.writeString(thumbnail);
+        parcel.writeLong(stopTime.getTime());
     }
 
     public Item(Parcel in) {
@@ -113,6 +125,7 @@ public class Item implements Parcelable {
         this.initialQuantity = in.readString();
         this.availableQuantity = in.readString();
         this.thumbnail = in.readString();
+        this.stopTime = new Date(in.readLong());
     }
 
 }

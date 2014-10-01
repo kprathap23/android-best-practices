@@ -21,7 +21,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +64,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             public static final String THUMBNAIL = "thumbnail";
             public static final String INITIAL_QUANTITY = "initial_quantity";
             public static final String PICTURES = "pictures";
+            public static final String STOP_TIME = "stop_time";
 
             public class Picture {
                 public static final String SIZE = "size";
@@ -109,7 +113,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     public Item findById(String id) {
         AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance(HTTP_CLIENT_USER_AGENT);
-        String resource = MainKeys.MELI_API_HOST + "/items/" + id + "?attributes=id,title,price,subtitle,initial_quantity,available_quantity,pictures";
+        String resource = MainKeys.MELI_API_HOST + "/items/" + id + "?attributes=id,title,price,subtitle,initial_quantity,available_quantity,stop_time,pictures";
 
         HttpGet get = new HttpGet(resource);
 
@@ -150,6 +154,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
         try {
             eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
+            eachItem.setStopTime(parseDate(eachObject.getString(Keys.Item.STOP_TIME)));
         } catch (JSONException e) {
             // Do nothing. It can be or not.
         }
@@ -161,6 +166,18 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
 
         return eachItem;
+    }
+
+    private Date parseDate(String string) {
+        Date date = null;
+        try {
+            String[] partials = string.split("T");
+            String value = partials[0] + partials[1];
+            date = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss").parse(value.substring(0, value.indexOf('.')));
+        } catch (ParseException e) {
+            Log.e(TAG, "Error while parsing stopTime: " + e.getMessage());
+        }
+        return date;
     }
 
     private String getMainPicture(JSONArray jsonPictures) throws JSONException {

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import java.util.Date;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in a service on a
  * separate handler thread.
@@ -27,6 +29,7 @@ public class ItemTrackerService extends IntentService {
 
     private static final String ITEM_ID = "com.nbempire.android.sample.component.service.extra.ITEM_ID";
     private static final String ITEM_PRICE = "com.nbempire.android.sample.component.service.extra.ITEM_PRICE";
+    private static final String ITEM_STOP_TIME = "com.nbempire.android.sample.component.service.extra.ITEM_STOP_TIME";
 
     public ItemTrackerService() {
         super("ItemTrackerService");
@@ -42,7 +45,7 @@ public class ItemTrackerService extends IntentService {
             if (Action.CHECK_ITEMS.equals(action)) {
                 handleActionCheckItems();
             } else if (Action.TRACK_ITEM.equals(action)) {
-                handleActionTrackItem(intent.getStringExtra(ITEM_ID), intent.getLongExtra(ITEM_PRICE, 0));
+                handleActionTrackItem(intent.getStringExtra(ITEM_ID), intent.getLongExtra(ITEM_PRICE, 0), new Date(intent.getLongExtra(ITEM_STOP_TIME, 0)));
             } else if (Action.STOP_TRACKING_ITEM.equals(action)) {
                 handleActionStopTrackingItem(intent.getStringExtra(ITEM_ID));
             } else {
@@ -59,8 +62,8 @@ public class ItemTrackerService extends IntentService {
     /**
      * Handle action Foo in the provided background thread with the provided parameters.
      */
-    private void handleActionTrackItem(String id, Long price) {
-        Log.v(TAG, "handleActionTrackItem... id: " + id + ", price: " + price);
+    private void handleActionTrackItem(String id, Long price, Date date) {
+        Log.v(TAG, "handleActionTrackItem... id: " + id + ", price: " + price + ", date: " + date);
     }
 
     private void handleActionStopTrackingItem(String id) {
@@ -75,11 +78,12 @@ public class ItemTrackerService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionTrackItem(Context context, String id, Long price) {
+    public static void startActionTrackItem(Context context, String id, Long price, Date stopTime) {
         Intent intent = new Intent(context, ItemTrackerService.class);
         intent.setAction(Action.TRACK_ITEM);
         intent.putExtra(ITEM_ID, id);
         intent.putExtra(ITEM_PRICE, price);
+        intent.putExtra(ITEM_STOP_TIME, stopTime.getTime());
         context.startService(intent);
     }
 

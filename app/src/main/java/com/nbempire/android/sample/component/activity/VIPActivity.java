@@ -66,7 +66,7 @@ public class VIPActivity extends Activity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Log.v(TAG, "onCheckedChanged...");
                 if (b) {
-                    ItemTrackerService.startActionTrackItem(context, item.getId(), item.getPrice());
+                    ItemTrackerService.startActionTrackItem(context, item.getId(), item.getPrice(), item.getStopTime());
                 } else {
                     ItemTrackerService.startActionStopTrackingItem(context, item.getId());
                 }
