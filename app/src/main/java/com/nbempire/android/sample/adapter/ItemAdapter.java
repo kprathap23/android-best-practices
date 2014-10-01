@@ -3,6 +3,7 @@ package com.nbempire.android.sample.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView subtitle;
         TextView availableQuantity;
         ImageView thumbnail;
+        TextView stopTime;
     }
 
     /**
@@ -94,6 +96,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             viewHolder.subtitle = (TextView) convertView.findViewById(R.id.item_subtitle);
             viewHolder.availableQuantity = (TextView) convertView.findViewById(R.id.item_quantity);
             viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.item_thumbnail);
+            viewHolder.stopTime = (TextView) convertView.findViewById(R.id.item_stop_time);
 
             convertView.setTag(viewHolder);
         } else {
@@ -108,6 +111,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         if (viewHolder.title != null) {
             viewHolder.title.setText(eachItem.getTitle() + " ($" + eachItem.getPrice() + ")");
+        }
+
+        if (viewHolder.stopTime != null) {
+            String formatted = DateUtils.formatDateTime(context, eachItem.getStopTime().getTime(), DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_NO_YEAR);
+            viewHolder.stopTime.setText(context.getText(R.string.end_date) + " " + formatted);
         }
 
         if (viewHolder.subtitle != null) {

@@ -33,6 +33,7 @@ public class Item implements Parcelable {
         this.id = id;
         this.title = title;
         this.price = price;
+        this.stopTime = stopTime;
     }
 
     public String getTitle() {

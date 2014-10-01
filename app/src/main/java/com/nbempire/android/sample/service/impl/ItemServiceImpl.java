@@ -53,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void trackItem(String id, Long price, Long stopTime, String title) {
-        Log.v(TAG, "trackItem... id: " + id + ", price: " + price + ", milliseconds: " + stopTime);
+        Log.v(TAG, "trackItem... id: " + id + ", price: " + price + ", milliseconds: " + stopTime + ", title: " + title);
         itemRepository.save(id, price, stopTime, title);
 
         SharedPreferences preferences = context.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);

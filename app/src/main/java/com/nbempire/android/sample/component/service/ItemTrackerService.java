@@ -134,7 +134,10 @@ public class ItemTrackerService extends IntentService {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DATE, 5);
 
-        return now.after(stopTime);
+        Calendar stopTimeCalendar = Calendar.getInstance();
+        stopTimeCalendar.setTime(stopTime);
+
+        return now.after(stopTimeCalendar);
     }
 
     //  TODO : Refactor public methods...
