@@ -22,7 +22,6 @@ public class VIPActivity extends Activity {
      * Used for log messages.
      */
     private static final String TAG = "VIPActivity";
-    private ItemService itemService;
 
     public class Keys {
         public static final String ITEM = "item";
@@ -42,7 +41,7 @@ public class VIPActivity extends Activity {
         Log.v(TAG, "onCreate...");
         setContentView(R.layout.activity_vip);
 
-        itemService = new ItemServiceImpl(this, new ItemRepositoryImpl(this));
+        ItemService itemService = new ItemServiceImpl(this, new ItemRepositoryImpl(this));
         item = getIntent().getParcelableExtra(Keys.ITEM);
 
         viewHolder = new ItemTask.ItemViewHolder();
