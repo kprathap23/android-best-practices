@@ -39,7 +39,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
     public ItemTask(Activity context, ItemViewHolder viewHolder) {
         this.context = context;
         this.viewHolder = viewHolder;
-        this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
+        this.itemService = new ItemServiceImpl(context, new ItemRepositoryImpl(context));
     }
 
     @Override

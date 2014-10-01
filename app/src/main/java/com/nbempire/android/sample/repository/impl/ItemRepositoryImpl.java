@@ -1,5 +1,9 @@
 package com.nbempire.android.sample.repository.impl;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
@@ -7,6 +11,8 @@ import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.repository.ItemRepository;
+import com.nbempire.android.sample.repository.contract.ItemContract;
+import com.nbempire.android.sample.repository.dbhelper.ItemsTrackerDbHelper;
 import com.nbempire.android.sample.util.Pageable;
 import com.nbempire.android.sample.util.impl.PageableImpl;
 
@@ -74,6 +80,12 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     }
 
+    public ItemRepositoryImpl(Context context) {
+        dbHelper = new ItemsTrackerDbHelper(context);
+    }
+
+    private ItemsTrackerDbHelper dbHelper;
+
     @Override
     public Pageable<Item> findByTitle(String title, Paging paging) {
         Pageable<Item> pageable = null;
@@ -135,6 +147,73 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
 
         return item;
+    }
+
+    @Override
+    public List<Item> getTrackedItems() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database you will actually use after this query.
+        String[] projection = {
+                ItemContract.ItemEntry._ID,
+                ItemContract.ItemEntry.Column.ID,
+                ItemContract.ItemEntry.Column.PRICE,
+                ItemContract.ItemEntry.Column.STOP_TIME
+        };
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder = ItemContract.ItemEntry.Column.ID + " ASC";
+
+        Cursor cursor = db.query(
+                ItemContract.ItemEntry.TABLE_NAME,  // The table to query
+                projection,                         // The columns to return
+                null,                               // The columns for the WHERE clause
+                null,                               // The values for the WHERE clause
+                null,                               // Don't group the rows
+                null,                               // Don't filter by row groups
+                sortOrder                           // The sort order
+        );
+
+        List<Item> items = new ArrayList<Item>();
+        if (cursor.getCount() < 0) {
+            Log.d(TAG, "Database has no items for tracking.");
+        } else {
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.ID));
+                Long price = cursor.getLong(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.PRICE));
+                Date stopTime = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(ItemContract.ItemEntry.Column.STOP_TIME)));
+
+                items.add(new Item(id, price, stopTime));
+            }
+        }
+
+        return items;
+    }
+
+    @Override
+    public void save(String id, Long price, Long stopTime) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ItemContract.ItemEntry.Column.ID, id);
+        values.put(ItemContract.ItemEntry.Column.PRICE, price);
+        values.put(ItemContract.ItemEntry.Column.STOP_TIME, stopTime);
+
+        db.insert(ItemContract.ItemEntry.TABLE_NAME, null, values);
+    }
+
+    @Override
+    public void remove(String id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Define 'where' part of query.
+        String selection = ItemContract.ItemEntry.Column.ID + " LIKE ?";
+
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = {String.valueOf(id)};
+
+        // Issue SQL statement.
+        db.delete(ItemContract.ItemEntry.TABLE_NAME, selection, selectionArgs);
     }
 
     private List<Item> parseJsonItems(JSONArray results) throws JSONException {

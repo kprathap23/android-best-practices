@@ -6,7 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
+import com.nbempire.android.sample.service.ItemService;
+import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in a service on a
@@ -20,6 +26,7 @@ public class ItemTrackerService extends IntentService {
      * Used for log messages.
      */
     private static final String TAG = "ItemTrackerService";
+    private ItemService itemService;
 
     public static class Action {
         public static final String CHECK_ITEMS = "com.nbempire.android.sample.component.service.action.CHECK_ITEMS";
@@ -33,6 +40,7 @@ public class ItemTrackerService extends IntentService {
 
     public ItemTrackerService() {
         super("ItemTrackerService");
+        itemService = new ItemServiceImpl(this, new ItemRepositoryImpl(this));
     }
 
     @Override
@@ -45,9 +53,9 @@ public class ItemTrackerService extends IntentService {
             if (Action.CHECK_ITEMS.equals(action)) {
                 handleActionCheckItems();
             } else if (Action.TRACK_ITEM.equals(action)) {
-                handleActionTrackItem(intent.getStringExtra(ITEM_ID), intent.getLongExtra(ITEM_PRICE, 0), new Date(intent.getLongExtra(ITEM_STOP_TIME, 0)));
+                itemService.trackItem(intent.getStringExtra(ITEM_ID), intent.getLongExtra(ITEM_PRICE, 0), intent.getLongExtra(ITEM_STOP_TIME, 0));
             } else if (Action.STOP_TRACKING_ITEM.equals(action)) {
-                handleActionStopTrackingItem(intent.getStringExtra(ITEM_ID));
+                itemService.stopTracking(intent.getStringExtra(ITEM_ID));
             } else {
                 Log.e(TAG, "No action mapped for value: " + action);
                 //  TODO : Should I do something here?
@@ -57,17 +65,15 @@ public class ItemTrackerService extends IntentService {
 
     private void handleActionCheckItems() {
         Log.v(TAG, "handleActionCheckItems...");
-    }
+        List<Item> trackedItems = itemService.getTrackedItems();
 
-    /**
-     * Handle action Foo in the provided background thread with the provided parameters.
-     */
-    private void handleActionTrackItem(String id, Long price, Date date) {
-        Log.v(TAG, "handleActionTrackItem... id: " + id + ", price: " + price + ", date: " + date);
-    }
+        for (Item trackedItem : trackedItems) {
+            Log.d(TAG, "Checking item id: " + trackedItem.getId() + ", price: " + trackedItem.getPrice() + ", stopTime: " + trackedItem.getStopTime());
+        }
 
-    private void handleActionStopTrackingItem(String id) {
-        Log.v(TAG, "handleActionStopTrackingItem... id: " + id);
+        if (trackedItems.size() == 0) {
+            Log.d(TAG, "There are no tracked items in database.");
+        }
     }
 
     //  TODO : Refactor public methods...

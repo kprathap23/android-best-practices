@@ -35,7 +35,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     public SearchTask(Activity context, ItemAdapter itemAdapter) {
         this.context = context;
-        this.itemService = new ItemServiceImpl(new ItemRepositoryImpl());
+        this.itemService = new ItemServiceImpl(context, new ItemRepositoryImpl(context));
         this.preferencesEditor = context.getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
         this.itemAdapter = itemAdapter;
     }

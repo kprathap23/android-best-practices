@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.service.ItemTrackerService;
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
+import com.nbempire.android.sample.service.ItemService;
+import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 import com.nbempire.android.sample.task.ItemTask;
 
 public class VIPActivity extends Activity {
@@ -19,6 +22,7 @@ public class VIPActivity extends Activity {
      * Used for log messages.
      */
     private static final String TAG = "VIPActivity";
+    private ItemService itemService;
 
     public class Keys {
         public static final String ITEM = "item";
@@ -38,6 +42,7 @@ public class VIPActivity extends Activity {
         Log.v(TAG, "onCreate...");
         setContentView(R.layout.activity_vip);
 
+        itemService = new ItemServiceImpl(this, new ItemRepositoryImpl(this));
         item = getIntent().getParcelableExtra(Keys.ITEM);
 
         viewHolder = new ItemTask.ItemViewHolder();
@@ -61,6 +66,11 @@ public class VIPActivity extends Activity {
         }
 
         Switch switchView = (Switch) findViewById(R.id.track_item_switch);
+
+        if (itemService.isTracked(item.getId())) {
+            switchView.setChecked(true);
+        }
+
         switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
