@@ -70,6 +70,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
      */
     static class ViewHolder {
         TextView title;
+        TextView subtitle;
+        TextView availableQuantity;
         ImageView thumbnail;
         TextView stopTime;
     }
@@ -91,6 +93,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             convertView = layoutInflater.inflate(R.layout.item_in_list, parent, false);
 
             viewHolder.title = (TextView) convertView.findViewById(R.id.item_title);
+            viewHolder.subtitle = (TextView) convertView.findViewById(R.id.item_subtitle);
+            viewHolder.availableQuantity = (TextView) convertView.findViewById(R.id.item_quantity);
             viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.item_thumbnail);
             viewHolder.stopTime = (TextView) convertView.findViewById(R.id.item_stop_time);
 
@@ -112,6 +116,14 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         if (viewHolder.stopTime != null) {
             String formatted = DateUtils.formatDateTime(context, eachItem.getStopTime().getTime(), DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_NO_YEAR);
             viewHolder.stopTime.setText(context.getText(R.string.end_date) + " " + formatted);
+        }
+
+        if (viewHolder.subtitle != null) {
+            viewHolder.subtitle.setText(eachItem.getSubtitle());
+        }
+
+        if (viewHolder.availableQuantity != null) {
+            viewHolder.availableQuantity.setText(context.getText(R.string.still_left) + " " + eachItem.getAvailableQuantity());
         }
 
         return convertView;
