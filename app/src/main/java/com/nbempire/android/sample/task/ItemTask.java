@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nbempire.android.sample.component.activity.VIPActivity;
+import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.manager.impl.ImageDownloadManagerImpl;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
@@ -58,6 +58,6 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
         viewHolder.initialQuantity.append(item.getInitialQuantity());
         viewHolder.availableQuantity.append(item.getAvailableQuantity());
 
-        context.getIntent().putExtra(VIPActivity.Keys.ITEM, item);
+        context.getIntent().putExtra(ItemDetailFragment.Keys.ITEM, item);
     }
 }

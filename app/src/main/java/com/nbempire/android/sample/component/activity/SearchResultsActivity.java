@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.nbempire.android.sample.R;
+import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Item;
 
@@ -32,7 +33,7 @@ public class SearchResultsActivity extends Activity implements SearchFragment.On
         Log.i(TAG, "Opening VIP for item: " + item.getTitle());
 
         Intent vipIntent = new Intent(this, VIPActivity.class);
-        vipIntent.putExtra(VIPActivity.Keys.ITEM, item);
+        vipIntent.putExtra(ItemDetailFragment.Keys.ITEM, item);
         startActivity(vipIntent);
     }
 

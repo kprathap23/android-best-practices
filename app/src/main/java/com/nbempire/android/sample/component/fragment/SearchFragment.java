@@ -63,7 +63,6 @@ public class SearchFragment extends ListFragment {
         }
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

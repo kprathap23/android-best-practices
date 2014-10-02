@@ -8,79 +8,10 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="com.nbempire.android.sample.component.activity.VIPActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/item_title"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/dollar_sign"
-        android:id="@+id/item_price_label"
-        android:layout_below="@+id/item_title"
-        android:layout_toStartOf="@+id/item_price"
-        android:layout_toLeftOf="@+id/item_price"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/item_price"
-        android:layout_below="@+id/item_title"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
-    <Switch
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/track_item"
-        android:id="@+id/track_item_switch"
-        android:layout_below="@+id/item_price"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/item_subtitle"
-        android:layout_below="@+id/track_item_switch"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_picture"
-        android:layout_below="@+id/item_subtitle"
-        android:layout_above="@+id/item_initial_quantity"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/initial_quantity"
-        android:id="@+id/item_initial_quantity"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/available_quantity"
-        android:id="@+id/item_available_quantity"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_height="match_parent"
+        android:name="com.nbempire.android.sample.component.fragment.ItemDetailFragment"
+        android:id="@+id/item_detail_fragment"/>
 
 </RelativeLayout>

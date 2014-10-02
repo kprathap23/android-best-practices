@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.activity.VIPActivity;
+import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
@@ -107,7 +108,7 @@ public class ItemTrackerService extends IntentService {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, VIPActivity.class);
-        resultIntent.putExtra(VIPActivity.Keys.ITEM, item);
+        resultIntent.putExtra(ItemDetailFragment.Keys.ITEM, item);
 
         // The stack builder object will contain an artificial back stack for the started Activity.
         // This ensures that navigating backward from the Activity leads out of your application to the Home screen.
