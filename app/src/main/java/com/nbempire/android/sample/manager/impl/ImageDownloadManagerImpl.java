@@ -31,11 +31,15 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
     private static ImageDownloadManagerImpl instance;
 
     private static List<Thread> threads;
+    private static List<Runnable> works;
+
+    private boolean running;
 
     private LruCache<String, Bitmap> memoryCache;
 
     private ImageDownloadManagerImpl() {
         threads = new ArrayList<Thread>();
+        works = new ArrayList<Runnable>();
 
         // Creates a memory cache.
         // In this example, one eighth of the application memory is allocated for our cache. On a normal/hdpi device this is a minimum of
@@ -59,7 +63,7 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
     }
 
     @Override
-    public void load(final String uri, final ImageView imageView) {
+    public synchronized void load(final String uri, final ImageView imageView) {
         final Bitmap bitmap = memoryCache.get(uri);
 
         if (bitmap != null) {
@@ -67,7 +71,7 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
         } else {
             Log.d(TAG, "Resource not available in memory cache. Creating new thread to get it from the network.");
 
-            queueRunnable(new Runnable() {
+            works.add(new Runnable() {
                 @Override
                 public void run() {
                     final Bitmap bitmap = loadBitmapFromNetwork(uri);
@@ -84,40 +88,62 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
 
                 }
             });
+
+            if (!running) {
+                loop();
+            }
         }
     }
 
-    private void queueRunnable(Runnable runnable) {
+    private synchronized void loop() {
+        running = true;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (running) {
+                    if (works.isEmpty()) {
+                        running = false;
+                        Log.d(TAG, "Thread pool has finished processing all works.");
+                    } else {
+                        handleThreadsAndRun();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private synchronized void handleThreadsAndRun() {
         if (threads.size() < MainKeys.MAX_THREADS) {
-            createThread(runnable);
+            doFirstWorkInQueue();
         } else {
-            Thread threadToRemove = null;
+            Thread finished = null;
             for (Thread eachThread : threads) {
                 if (!eachThread.isAlive()) {
-                    threadToRemove = eachThread;
+                    finished = eachThread;
                     break;
                 }
             }
 
-            if (threadToRemove != null) {
-                threads.remove(threadToRemove);
+            if (finished != null) {
+                threads.remove(finished);
                 Log.d(TAG, "Thread pool has: " + threads.size() + " of: " + MainKeys.MAX_THREADS);
-                createThread(runnable);
+                doFirstWorkInQueue();
             } else {
-                Log.d(TAG, "Thread pool is full, queueing work waiting for a free thread.");
-                //  TODO : Do magic
+                Log.d(TAG, "Thread pool is full, waiting for a free thread.");
             }
         }
     }
 
-    private void createThread(Runnable runnable) {
-        Log.v(TAG, "createThread...");
+    private synchronized void doFirstWorkInQueue() {
+        Log.v(TAG, "doFirstWorkInQueue...");
 
-        Thread thread = new Thread(runnable);
+        Thread thread = new Thread(works.remove(0));
         thread.start();
         threads.add(thread);
 
         Log.d(TAG, "Thread pool has: " + threads.size() + " of: " + MainKeys.MAX_THREADS);
+        Log.d(TAG, "Works queue still has: " + works.size() + " to solve");
     }
 
     private Bitmap loadBitmapFromNetwork(String uri) {
