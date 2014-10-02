@@ -2,6 +2,8 @@ package com.nbempire.android.sample.component.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ public class ItemDetailFragment extends Fragment {
 
     public class Keys {
         public static final String ITEM = "item";
+        private static final String PICTURE = "picture";
     }
 
     @Override
@@ -63,6 +66,8 @@ public class ItemDetailFragment extends Fragment {
 
         if (savedInstanceState == null) {
             new ItemTask(context, viewHolder).execute(item.getId());
+        } else {
+            viewHolder.picture.setImageBitmap((Bitmap) savedInstanceState.getParcelable(Keys.PICTURE));
         }
 
         viewHolder.title.setText(item.getTitle());
@@ -124,6 +129,7 @@ public class ItemDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         Log.v(TAG, "onSaveInstanceState...");
         outState.putParcelable(Keys.ITEM, context.getIntent().getParcelableExtra(Keys.ITEM));
+        outState.putParcelable(Keys.PICTURE, ((BitmapDrawable) viewHolder.picture.getDrawable()).getBitmap());
     }
 
     /**
