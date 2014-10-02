@@ -52,6 +52,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
     @Override
     protected void onPostExecute(Item item) {
         ImageDownloadManagerImpl.getInstance().load(item.getMainPictureUrl(), viewHolder.picture);
+
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
         viewHolder.price.setText(String.valueOf(item.getPrice()));

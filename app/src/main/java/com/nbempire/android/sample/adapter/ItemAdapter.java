@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
-import com.nbempire.android.sample.manager.ImageDownloadManager;
 import com.nbempire.android.sample.manager.impl.ImageDownloadManagerImpl;
 import com.nbempire.android.sample.task.SearchTask;
 import com.nbempire.android.sample.util.Pageable;
@@ -48,7 +47,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     private Activity context;
     private Pageable<Item> pageable;
     private final LayoutInflater layoutInflater;
-    private final ImageDownloadManager imageDownloadManager;
 
     private SparseBooleanArray loadedPages;
 
@@ -57,7 +55,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.imageDownloadManager = ImageDownloadManagerImpl.getInstance();
 
         loadedPages = new SparseBooleanArray();
 
@@ -106,7 +103,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Item eachItem = getItem(position);
 
         if (viewHolder.thumbnail != null) {
-            imageDownloadManager.load(eachItem.getThumbnail(), viewHolder.thumbnail);
+            ImageDownloadManagerImpl.getInstance().load(eachItem.getThumbnail(), viewHolder.thumbnail);
         }
 
         if (viewHolder.title != null) {
