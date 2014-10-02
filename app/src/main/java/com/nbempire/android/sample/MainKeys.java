@@ -12,5 +12,7 @@ public class MainKeys {
     public static final int CHECK_TRACKED_ITEMS_INTERVAL = 60000;
     public static final String CHECK_TRACKED_ITEMS_INTERVAL_SECONDS = "60";
 
+    public static final int MAX_THREADS = 5;
+
     public static final String TRACKED_ITEMS_ID = "trackedItemsId";
 }
