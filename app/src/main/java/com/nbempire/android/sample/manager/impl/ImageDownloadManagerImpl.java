@@ -6,11 +6,14 @@ import android.util.Log;
 import android.util.LruCache;
 import android.widget.ImageView;
 
+import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.manager.ImageDownloadManager;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nbarrios on 25/09/14.
@@ -27,9 +30,13 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
 
     private static ImageDownloadManagerImpl instance;
 
+    private static List<Thread> threads;
+
     private LruCache<String, Bitmap> memoryCache;
 
     private ImageDownloadManagerImpl() {
+        threads = new ArrayList<Thread>();
+
         // Creates a memory cache.
         // In this example, one eighth of the application memory is allocated for our cache. On a normal/hdpi device this is a minimum of
         // around 4MB (32/8). A full screen GridView filled with images on a device with 800x480 resolution would use around 1.5MB (800*480*4 bytes),
@@ -59,7 +66,8 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
             imageView.setImageBitmap(bitmap);
         } else {
             Log.d(TAG, "Resource not available in memory cache. Creating new thread to get it from the network.");
-            new Thread(new Runnable() {
+
+            queueRunnable(new Runnable() {
                 @Override
                 public void run() {
                     final Bitmap bitmap = loadBitmapFromNetwork(uri);
@@ -75,8 +83,41 @@ public class ImageDownloadManagerImpl implements ImageDownloadManager {
                     }
 
                 }
-            }).start();
+            });
         }
+    }
+
+    private void queueRunnable(Runnable runnable) {
+        if (threads.size() < MainKeys.MAX_THREADS) {
+            createThread(runnable);
+        } else {
+            Thread threadToRemove = null;
+            for (Thread eachThread : threads) {
+                if (!eachThread.isAlive()) {
+                    threadToRemove = eachThread;
+                    break;
+                }
+            }
+
+            if (threadToRemove != null) {
+                threads.remove(threadToRemove);
+                Log.d(TAG, "Thread pool has: " + threads.size() + " of: " + MainKeys.MAX_THREADS);
+                createThread(runnable);
+            } else {
+                Log.d(TAG, "Thread pool is full, queueing work waiting for a free thread.");
+                //  TODO : Do magic
+            }
+        }
+    }
+
+    private void createThread(Runnable runnable) {
+        Log.v(TAG, "createThread...");
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+        threads.add(thread);
+
+        Log.d(TAG, "Thread pool has: " + threads.size() + " of: " + MainKeys.MAX_THREADS);
     }
 
     private Bitmap loadBitmapFromNetwork(String uri) {
