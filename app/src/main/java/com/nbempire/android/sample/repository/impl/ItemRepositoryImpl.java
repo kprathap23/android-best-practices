@@ -242,11 +242,15 @@ public class ItemRepositoryImpl implements ItemRepository {
 
         try {
             eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
-            eachItem.setStopTime(parseDate(eachObject.getString(Keys.Item.STOP_TIME)));
         } catch (JSONException e) {
             // Do nothing. It can be or not.
         }
 
+        try {
+            eachItem.setStopTime(parseDate(eachObject.getString(Keys.Item.STOP_TIME)));
+        } catch (JSONException e) {
+            // Do nothing. It can be or not.
+        }
 
         if (getItemSpecificValues) {
             eachItem.setInitialQuantity(parseJson(eachObject.getString(Keys.Item.INITIAL_QUANTITY)));
