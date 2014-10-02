@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.activity.VIPActivity;
-import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
@@ -41,10 +40,12 @@ public class ItemTrackerService extends IntentService {
         private static final String STOP_TRACKING_ITEM = "com.nbempire.android.sample.component.service.action.STOP_TRACKING_ITEM";
     }
 
-    private static final String ITEM_ID = "com.nbempire.android.sample.component.service.extra.ITEM_ID";
-    private static final String ITEM_TITLE = "com.nbempire.android.sample.component.service.extra.ITEM_TITLE";
-    private static final String ITEM_PRICE = "com.nbempire.android.sample.component.service.extra.ITEM_PRICE";
-    private static final String ITEM_STOP_TIME = "com.nbempire.android.sample.component.service.extra.ITEM_STOP_TIME";
+    private static class Keys {
+        private static final String ITEM_ID = "itemId";
+        private static final String ITEM_TITLE = "itemTitle";
+        private static final String ITEM_PRICE = "itemPrice";
+        private static final String ITEM_STOP_TIME = "itemStopTime";
+    }
 
     public ItemTrackerService() {
         super("ItemTrackerService");
@@ -61,9 +62,9 @@ public class ItemTrackerService extends IntentService {
             if (Action.CHECK_ITEMS.equals(action)) {
                 handleActionCheckItems();
             } else if (Action.TRACK_ITEM.equals(action)) {
-                itemService.trackItem(intent.getStringExtra(ITEM_ID), intent.getLongExtra(ITEM_PRICE, 0), intent.getLongExtra(ITEM_STOP_TIME, 0), intent.getStringExtra(ITEM_TITLE));
+                itemService.trackItem(intent.getStringExtra(Keys.ITEM_ID), intent.getLongExtra(Keys.ITEM_PRICE, 0), intent.getLongExtra(Keys.ITEM_STOP_TIME, 0), intent.getStringExtra(Keys.ITEM_TITLE));
             } else if (Action.STOP_TRACKING_ITEM.equals(action)) {
-                itemService.stopTracking(intent.getStringExtra(ITEM_ID));
+                itemService.stopTracking(intent.getStringExtra(Keys.ITEM_ID));
             } else {
                 Log.e(TAG, "No action mapped for value: " + action);
                 //  TODO : Should I do something here?
@@ -108,7 +109,7 @@ public class ItemTrackerService extends IntentService {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, VIPActivity.class);
-        resultIntent.putExtra(ItemDetailFragment.Keys.ITEM, item);
+        resultIntent.putExtra(VIPActivity.Keys.ITEM, item);
 
         // The stack builder object will contain an artificial back stack for the started Activity.
         // This ensures that navigating backward from the Activity leads out of your application to the Home screen.
@@ -150,10 +151,10 @@ public class ItemTrackerService extends IntentService {
     public static void startActionTrackItem(Context context, String id, String title, Long price, Date stopTime) {
         Intent intent = new Intent(context, ItemTrackerService.class);
         intent.setAction(Action.TRACK_ITEM);
-        intent.putExtra(ITEM_ID, id);
-        intent.putExtra(ITEM_TITLE, title);
-        intent.putExtra(ITEM_PRICE, price);
-        intent.putExtra(ITEM_STOP_TIME, stopTime.getTime());
+        intent.putExtra(Keys.ITEM_ID, id);
+        intent.putExtra(Keys.ITEM_TITLE, title);
+        intent.putExtra(Keys.ITEM_PRICE, price);
+        intent.putExtra(Keys.ITEM_STOP_TIME, stopTime.getTime());
         context.startService(intent);
     }
 
@@ -166,7 +167,7 @@ public class ItemTrackerService extends IntentService {
     public static void startActionStopTrackingItem(Activity context, String id) {
         Intent intent = new Intent(context, ItemTrackerService.class);
         intent.setAction(Action.STOP_TRACKING_ITEM);
-        intent.putExtra(ITEM_ID, id);
+        intent.putExtra(Keys.ITEM_ID, id);
         context.startService(intent);
     }
 

@@ -9,7 +9,6 @@ import android.widget.EditText;
 
 import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.R;
-import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Paging;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.task.SearchTask;
@@ -47,7 +46,7 @@ public class SearchActivity extends Activity {
 
         Log.d(TAG, "Starting activity to display search results...");
         Intent resultsIntent = new Intent(this, SearchResultsActivity.class);
-        resultsIntent.putExtra(SearchFragment.Keys.SEARCH, search);
+        resultsIntent.putExtra(SearchResultsActivity.Keys.SEARCH, search);
         startActivity(resultsIntent);
     }
 

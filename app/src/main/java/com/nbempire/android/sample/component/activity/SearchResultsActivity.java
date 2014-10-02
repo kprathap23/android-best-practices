@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.nbempire.android.sample.R;
-import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Item;
 
@@ -19,6 +18,10 @@ public class SearchResultsActivity extends Activity implements SearchFragment.On
      * Used for log messages.
      */
     private static final String TAG = "SearchResultsActivity";
+
+    public static class Keys {
+        public static final String SEARCH = SearchFragment.Keys.SEARCH;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,7 @@ public class SearchResultsActivity extends Activity implements SearchFragment.On
         Log.i(TAG, "Opening VIP for item: " + item.getTitle());
 
         Intent vipIntent = new Intent(this, VIPActivity.class);
-        vipIntent.putExtra(ItemDetailFragment.Keys.ITEM, item);
+        vipIntent.putExtra(VIPActivity.Keys.ITEM, item);
         startActivity(vipIntent);
     }
 

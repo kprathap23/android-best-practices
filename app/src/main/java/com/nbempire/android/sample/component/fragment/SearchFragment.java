@@ -34,7 +34,7 @@ public class SearchFragment extends ListFragment {
     public class Keys {
         public static final String SEARCH = "search";
         public static final String PAGEABLE = "pageable";
-        public static final String ITEM_ADAPTER = "itemAdapter";
+        private static final String ITEM_ADAPTER = "itemAdapter";
     }
 
     @Override

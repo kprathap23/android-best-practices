@@ -16,6 +16,10 @@ public class VIPActivity extends Activity implements ItemDetailFragment.OnFragme
      */
     private static final String TAG = "VIPActivity";
 
+    public static class Keys {
+        public static final String ITEM = ItemDetailFragment.Keys.ITEM;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
