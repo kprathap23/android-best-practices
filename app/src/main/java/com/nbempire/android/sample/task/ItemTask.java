@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
-import com.nbempire.android.sample.manager.impl.ImageDownloadManagerImpl;
+import com.nbempire.android.sample.manager.impl.ImageDownloadManagerTPE;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
@@ -51,7 +51,8 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
 
     @Override
     protected void onPostExecute(Item item) {
-        ImageDownloadManagerImpl.getInstance().load(item.getMainPictureUrl(), viewHolder.picture);
+//        ImageDownloadManagerImpl.getInstance().load(item.getMainPictureUrl(), viewHolder.picture);
+        ImageDownloadManagerTPE.load(item.getMainPictureUrl(), viewHolder.picture);
 
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
