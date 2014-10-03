@@ -3,6 +3,7 @@ package com.nbempire.android.sample.manager.impl;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import com.nbempire.android.sample.util.CustomRunnable;
@@ -41,41 +42,55 @@ public class ImageDownloadManagerTPE {
 
     private ThreadPoolExecutor executor;
 
+    private static LruCache<String, Bitmap> memoryCache;
+
     private ImageDownloadManagerTPE() {
         BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
         executor = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES, 5, TimeUnit.SECONDS, queue);
+        createMemoryCache();
     }
 
     public static void load(final String uri, final ImageView imageView) {
-        Log.v(TAG, "load...");
+        Log.v(TAG, "load..." + "uri: " + uri);
 
-        if (imageView.getTag() != null) {
-            removePendingTask((Integer) imageView.getTag());
-        }
+        final Bitmap bitmap = memoryCache.get(uri);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+            Log.d(TAG, "Resource loaded from memory cache");
+        } else {
+            Log.d(TAG, "Resource not available in memory cache. Queueing task to the image manager...");
 
-        final int newId = uri.hashCode();
-        imageView.setTag(newId);
+            if (imageView.getTag() != null) {
+                removePendingTask((Integer) imageView.getTag());
+            }
 
-        instance.executor.execute(new CustomRunnable() {
-            private int id = newId;
+            final int newId = uri.hashCode();
+            imageView.setTag(newId);
 
-            @Override
-            public void run() {
-                final Bitmap bitmap = loadBitmapFromNetwork(uri);
+            instance.executor.execute(new CustomRunnable() {
+                private int id = newId;
 
-                imageView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageBitmap(bitmap);
+                @Override
+                public void run() {
+                    final Bitmap bitmap = loadBitmapFromNetwork(uri);
+                    if (bitmap != null) {
+                        imageView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+
+                        memoryCache.put(uri, bitmap);
                     }
-                });
-            }
+                }
 
-            @Override
-            public int getId() {
-                return this.id;
-            }
-        });
+                @Override
+                public int getId() {
+                    return this.id;
+                }
+            });
+        }
     }
 
     /**
@@ -114,6 +129,28 @@ public class ImageDownloadManagerTPE {
         }
 
         return BitmapFactory.decodeStream(inputStream);
+    }
+
+    private void createMemoryCache() {
+        // Creates a memory cache.
+        // In this example, one eighth of the application memory is allocated for our cache. On a normal/hdpi device this is a minimum of
+        // around 4MB (32/8). A full screen GridView filled with images on a device with 800x480 resolution would use around 1.5MB (800*480*4 bytes),
+        // so this would cache a minimum of around 2.5 pages of images in memory.
+        // Get max available VM memory, exceeding this amount will throw an OutOfMemory exception. Stored in kilobytes as LruCache takes an int in its constructor.
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/8th of the available memory for this memory cache.
+        final int cacheSize = maxMemory / 8;
+
+        memoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                // The cache size will be measured in kilobytes rather than number of items.
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+
+        Log.d(TAG, "Memory cache created.");
     }
 
 }
