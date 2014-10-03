@@ -1,4 +1,4 @@
-package com.nbempire.android.sample.manager.impl;
+package com.nbempire.android.sample.manager;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by nbarrios on 02/10/14.
  */
-public class ImageDownloadManagerTPE {
+public class ImageDownloadManager {
 
     /**
      * Used for log messages.
@@ -34,17 +34,17 @@ public class ImageDownloadManagerTPE {
      */
     private static int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
-    private static final ImageDownloadManagerTPE instance;
+    private static final ImageDownloadManager instance;
 
     static {
-        instance = new ImageDownloadManagerTPE();
+        instance = new ImageDownloadManager();
     }
 
     private ThreadPoolExecutor executor;
 
     private static LruCache<String, Bitmap> memoryCache;
 
-    private ImageDownloadManagerTPE() {
+    private ImageDownloadManager() {
         BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
         executor = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES, 5, TimeUnit.SECONDS, queue);
         createMemoryCache();
