@@ -103,7 +103,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Item eachItem = getItem(position);
 
         if (viewHolder.thumbnail != null) {
-//            ImageDownloadManagerImpl.getInstance().load(eachItem.getThumbnail(), viewHolder.thumbnail);
             ImageDownloadManagerTPE.load(eachItem.getThumbnail(), viewHolder.thumbnail);
         }
 

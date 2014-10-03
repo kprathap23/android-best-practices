@@ -50,6 +50,15 @@ public class ImageDownloadManagerTPE {
         createMemoryCache();
     }
 
+    /**
+     * Loads an image from the given uri either from the cache or the network.
+     * <p/>
+     * It save all resources in a memory cache.
+     *
+     * @param uri       The resource to load.
+     * @param imageView The {@link android.widget.ImageView} object where to load the image once it
+     *                  was loaded.
+     */
     public static void load(final String uri, final ImageView imageView) {
         Log.v(TAG, "load..." + "uri: " + uri);
 
