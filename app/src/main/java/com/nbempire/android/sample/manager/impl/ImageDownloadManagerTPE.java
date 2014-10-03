@@ -46,10 +46,15 @@ public class ImageDownloadManagerTPE {
         executor = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES, 5, TimeUnit.SECONDS, queue);
     }
 
-    public static void load(int oldId, final int newId, final String uri, final ImageView imageView) {
-        Log.v(TAG, "load... for image (item) id: " + newId);
+    public static void load(final String uri, final ImageView imageView) {
+        Log.v(TAG, "load...");
 
-        removePendingTask(oldId);
+        if (imageView.getTag() != null) {
+            removePendingTask((Integer) imageView.getTag());
+        }
+
+        final int newId = uri.hashCode();
+        imageView.setTag(newId);
 
         instance.executor.execute(new CustomRunnable() {
             private int id = newId;
