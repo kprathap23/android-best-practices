@@ -2,7 +2,6 @@ package com.nbempire.android.sample.manager.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -38,15 +37,9 @@ public class ImageDownloadManagerTPE {
 
     private ThreadPoolExecutor executor;
 
-    private Handler handler;
-
-    private BlockingQueue<Runnable> queue;
-
     private ImageDownloadManagerTPE() {
-        queue = new LinkedBlockingQueue<Runnable>();
+        BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
         executor = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES, 5, TimeUnit.SECONDS, queue);
-
-//        handler = new Handler(Looper.getMainLooper());
     }
 
     public static void load(final String uri, final ImageView imageView) {
@@ -56,6 +49,7 @@ public class ImageDownloadManagerTPE {
                 final Bitmap bitmap = loadBitmapFromNetwork(uri);
 
                 imageView.post(new Runnable() {
+                    @Override
                     public void run() {
                         imageView.setImageBitmap(bitmap);
                     }
