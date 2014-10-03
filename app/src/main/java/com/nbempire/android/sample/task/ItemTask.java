@@ -52,7 +52,15 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
     @Override
     protected void onPostExecute(Item item) {
 //        ImageDownloadManagerImpl.getInstance().load(item.getMainPictureUrl(), viewHolder.picture);
-        ImageDownloadManagerTPE.load(item.getMainPictureUrl(), viewHolder.picture);
+
+        int oldId = 0;
+        if (viewHolder.picture.getTag() != null) {
+            oldId = (Integer) viewHolder.picture.getTag();
+        }
+        int newId = item.getMainPictureUrl().hashCode();
+        viewHolder.picture.setTag(newId);
+
+        ImageDownloadManagerTPE.load(oldId, newId, item.getMainPictureUrl(), viewHolder.picture);
 
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());

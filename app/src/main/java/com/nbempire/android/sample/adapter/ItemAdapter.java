@@ -104,7 +104,14 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         if (viewHolder.thumbnail != null) {
 //            ImageDownloadManagerImpl.getInstance().load(eachItem.getThumbnail(), viewHolder.thumbnail);
-            ImageDownloadManagerTPE.load(eachItem.getThumbnail(), viewHolder.thumbnail);
+            int oldId = 0;
+            if (viewHolder.thumbnail.getTag() != null) {
+                oldId = (Integer) viewHolder.thumbnail.getTag();
+            }
+            int newId = eachItem.getThumbnail().hashCode();
+            viewHolder.thumbnail.setTag(newId);
+
+            ImageDownloadManagerTPE.load(oldId, newId, eachItem.getThumbnail(), viewHolder.thumbnail);
         }
 
         if (viewHolder.title != null) {
