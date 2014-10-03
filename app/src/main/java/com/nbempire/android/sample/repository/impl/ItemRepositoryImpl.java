@@ -45,6 +45,8 @@ public class ItemRepositoryImpl implements ItemRepository {
     private static final String ENCODING = "UTF-8";
     private static final String HTTP_CLIENT_USER_AGENT = "userAgent";
 
+    private static ItemRepository instance;
+
     /**
      * Existent keys on API.
      */
@@ -80,7 +82,14 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     }
 
-    public ItemRepositoryImpl(Context context) {
+    public static ItemRepository getInstance(Context context) {
+        if (instance == null) {
+            instance = new ItemRepositoryImpl(context);
+        }
+        return instance;
+    }
+
+    private ItemRepositoryImpl(Context context) {
         dbHelper = new ItemsTrackerDbHelper(context);
     }
 

@@ -8,6 +8,7 @@ import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.repository.ItemRepository;
+import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.util.Pageable;
 
@@ -28,10 +29,19 @@ public class ItemServiceImpl implements ItemService {
      */
     private static final String TAG = "ItemServiceImpl";
 
+    private static ItemServiceImpl instance;
+
     private Context context;
     private ItemRepository itemRepository;
 
-    public ItemServiceImpl(Context context, ItemRepository itemRepository) {
+    public static ItemService getInstance(Context context) {
+        if (instance == null) {
+            instance = new ItemServiceImpl(context, ItemRepositoryImpl.getInstance(context));
+        }
+        return instance;
+    }
+
+    private ItemServiceImpl(Context context, ItemRepository itemRepository) {
         this.context = context;
         this.itemRepository = itemRepository;
     }

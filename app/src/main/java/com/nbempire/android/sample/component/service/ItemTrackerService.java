@@ -13,7 +13,6 @@ import android.util.Log;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.activity.VIPActivity;
 import com.nbempire.android.sample.domain.Item;
-import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 
@@ -49,7 +48,7 @@ public class ItemTrackerService extends IntentService {
 
     public ItemTrackerService() {
         super("ItemTrackerService");
-        itemService = new ItemServiceImpl(this, new ItemRepositoryImpl(this));
+        itemService = ItemServiceImpl.getInstance(this);
     }
 
     @Override

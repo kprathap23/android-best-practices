@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.manager.ImageDownloadManager;
-import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 
@@ -39,7 +38,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
     public ItemTask(Activity context, ItemViewHolder viewHolder) {
         this.context = context;
         this.viewHolder = viewHolder;
-        this.itemService = new ItemServiceImpl(context, new ItemRepositoryImpl(context));
+        this.itemService = ItemServiceImpl.getInstance(context);
     }
 
     @Override

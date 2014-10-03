@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.service.ItemTrackerService;
 import com.nbempire.android.sample.domain.Item;
-import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 import com.nbempire.android.sample.task.ItemTask;
@@ -82,7 +81,7 @@ public class ItemDetailFragment extends Fragment {
             viewHolder.availableQuantity.append(item.getAvailableQuantity());
         }
 
-        ItemService itemService = new ItemServiceImpl(context, new ItemRepositoryImpl(context));
+        ItemService itemService = ItemServiceImpl.getInstance(context);
         Switch switchView = (Switch) view.findViewById(R.id.track_item_switch);
 
         if (itemService.isTracked(item.getId())) {
