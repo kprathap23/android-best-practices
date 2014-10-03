@@ -85,30 +85,28 @@ public class ImageDownloadManagerTPE {
      * @param runnableId The id of a Runnable to look for.
      */
     private static void removePendingTask(int runnableId) {
-        Log.d(TAG, "Queue size: " + instance.executor.getQueue().size());
-        Log.d(TAG, "Searching for a Runnable with id: " + runnableId);
+        Log.v(TAG, "removePendingTask...");
+        Log.d(TAG, "Searching for runnable with id: " + runnableId);
 
         List<Runnable> toRemove = new ArrayList<Runnable>();
         for (Runnable runnable : instance.executor.getQueue()) {
-            Log.d(TAG, "Runnable id: " + runnableId + ", eachId: " + ((CustomRunnable) runnable).getId());
             if (((CustomRunnable) runnable).getId() == runnableId) {
                 toRemove.add(runnable);
             }
         }
 
-        Log.d(TAG, "Added " + toRemove.size() + " to remove from the original: " + instance.executor.getQueue().size());
-
         for (Runnable runnable : toRemove) {
-            Log.v(TAG, "Removing Runnable " + ((CustomRunnable) runnable).getId() + " from executor's queue");
+            Log.d(TAG, "Removing Runnable " + ((CustomRunnable) runnable).getId() + " from queue");
             instance.executor.remove(runnable);
         }
 
-        Log.d(TAG, "After remove: " + instance.executor.getQueue().size());
+        Log.d(TAG, "Removed: " + toRemove.size() + " runnables from queue");
     }
 
     private static Bitmap loadBitmapFromNetwork(String uri) {
-        InputStream inputStream = null;
+        Log.v(TAG, "loadBitmapFromNetwork...");
 
+        InputStream inputStream = null;
         try {
             inputStream = new URL(uri).openStream();
         } catch (IOException e) {
