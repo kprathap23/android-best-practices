@@ -129,6 +129,8 @@ public class ItemDetailFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.v(TAG, "onSaveInstanceState...");
         outState.putParcelable(Keys.ITEM, context.getIntent().getParcelableExtra(Keys.ITEM));
+
+        //  TODO : I should not be doing this. It's not the way to save an image.
         outState.putParcelable(Keys.PICTURE, ((BitmapDrawable) viewHolder.picture.getDrawable()).getBitmap());
         super.onSaveInstanceState(outState);
     }
