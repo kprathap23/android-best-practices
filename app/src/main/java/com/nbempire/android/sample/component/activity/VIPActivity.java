@@ -1,7 +1,7 @@
 package com.nbempire.android.sample.component.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.CompoundButton;
 
@@ -9,7 +9,7 @@ import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
 
-public class VIPActivity extends Activity implements ItemDetailFragment.OnFragmentInteractionListener {
+public class VIPActivity extends FragmentActivity implements ItemDetailFragment.OnFragmentInteractionListener {
 
     /**
      * Used for log messages.

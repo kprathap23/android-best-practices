@@ -1,8 +1,8 @@
 package com.nbempire.android.sample.component.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.nbempire.android.sample.R;
@@ -12,7 +12,7 @@ import com.nbempire.android.sample.domain.Item;
 /**
  * Created by nbarrios on 24/09/14.
  */
-public class SearchResultsActivity extends Activity implements SearchFragment.OnFragmentInteractionListener {
+public class SearchResultsActivity extends FragmentActivity implements SearchFragment.OnFragmentInteractionListener {
 
     /**
      * Used for log messages.
