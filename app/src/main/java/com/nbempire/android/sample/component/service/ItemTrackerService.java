@@ -15,8 +15,8 @@ import com.nbempire.android.sample.component.activity.VIPActivity;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+import com.nbempire.android.sample.util.DateUtils;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -78,10 +78,14 @@ public class ItemTrackerService extends IntentService {
         for (Item trackedItem : trackedItems) {
             Log.d(TAG, "Checking item id: " + trackedItem.getId() + ", price: " + trackedItem.getPrice() + ", stopTime: " + trackedItem.getStopTime());
 
-            if (nearTo(trackedItem.getStopTime())) {
+            if (DateUtils.nearTo(trackedItem.getStopTime(), 5)) {
                 Log.d(TAG, "Item stop time is near.");
 
                 displayNotification(trackedItem, getString(R.string.an_interesting_item_near_to_finish));
+
+                if (DateUtils.isToday(trackedItem.getStopTime())) {
+                    itemService.stopTracking(trackedItem.getId());
+                }
             } else {
                 Log.d(TAG, "Checking if the item was recently updated.");
 
@@ -127,16 +131,6 @@ public class ItemTrackerService extends IntentService {
 
         // id allows you to update the notification later on.
         mNotificationManager.notify(item.getId().hashCode(), mBuilder.build());
-    }
-
-    private boolean nearTo(Date stopTime) {
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.DATE, 5);
-
-        Calendar stopTimeCalendar = Calendar.getInstance();
-        stopTimeCalendar.setTime(stopTime);
-
-        return now.after(stopTimeCalendar);
     }
 
     //  TODO : Refactor public methods...
