@@ -98,6 +98,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder.thumbnail.setImageDrawable(null);
         }
 
         Item eachItem = getItem(position);
