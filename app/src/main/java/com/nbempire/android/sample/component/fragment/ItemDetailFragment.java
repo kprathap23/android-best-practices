@@ -53,39 +53,41 @@ public class ItemDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.v(TAG, "onCreateView... ");
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item_detail, container, false);
 
-        viewHolder.title = (TextView) view.findViewById(R.id.item_title);
-        viewHolder.subtitle = (TextView) view.findViewById(R.id.item_subtitle);
-        viewHolder.price = (TextView) view.findViewById(R.id.item_price);
-        viewHolder.initialQuantity = (TextView) view.findViewById(R.id.item_initial_quantity);
-        viewHolder.availableQuantity = (TextView) view.findViewById(R.id.item_available_quantity);
         viewHolder.picture = (ImageView) view.findViewById(R.id.item_picture);
-
-        if (savedInstanceState == null) {
-            new ItemTask(context, viewHolder).execute(item.getId());
-        } else {
-            viewHolder.picture.setImageBitmap((Bitmap) savedInstanceState.getParcelable(Keys.PICTURE));
-        }
-
-        viewHolder.title.setText(item.getTitle());
-        viewHolder.subtitle.setText(item.getSubtitle());
-        viewHolder.price.setText(String.valueOf(item.getPrice()));
-
-        if (item.getInitialQuantity() != null) {
-            viewHolder.initialQuantity.append(item.getInitialQuantity());
-        }
-
-        if (item.getAvailableQuantity() != null) {
-            viewHolder.availableQuantity.append(item.getAvailableQuantity());
-        }
-
-        ItemService itemService = ItemServiceImpl.getInstance(context);
         Switch switchView = (Switch) view.findViewById(R.id.track_item_switch);
 
-        if (itemService.isTracked(item.getId())) {
-            switchView.setChecked(true);
+        if (savedInstanceState == null) {
+            viewHolder.title = (TextView) view.findViewById(R.id.item_title);
+            viewHolder.subtitle = (TextView) view.findViewById(R.id.item_subtitle);
+            viewHolder.price = (TextView) view.findViewById(R.id.item_price);
+            viewHolder.initialQuantity = (TextView) view.findViewById(R.id.item_initial_quantity);
+            viewHolder.availableQuantity = (TextView) view.findViewById(R.id.item_available_quantity);
+
+            new ItemTask(context, viewHolder).execute(item.getId());
+
+            viewHolder.title.setText(item.getTitle());
+            viewHolder.subtitle.setText(item.getSubtitle());
+            viewHolder.price.setText(String.valueOf(item.getPrice()));
+
+            if (item.getInitialQuantity() != null) {
+                viewHolder.initialQuantity.setText(item.getInitialQuantity());
+            }
+
+            if (item.getAvailableQuantity() != null) {
+                viewHolder.availableQuantity.setText(item.getAvailableQuantity());
+            }
+
+            ItemService itemService = ItemServiceImpl.getInstance(context);
+            if (itemService.isTracked(item.getId())) {
+                switchView.setChecked(true);
+            }
+        } else {
+            viewHolder.picture.setImageBitmap((Bitmap) savedInstanceState.getParcelable(Keys.PICTURE));
         }
 
         switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -125,10 +127,10 @@ public class ItemDetailFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         Log.v(TAG, "onSaveInstanceState...");
         outState.putParcelable(Keys.ITEM, context.getIntent().getParcelableExtra(Keys.ITEM));
         outState.putParcelable(Keys.PICTURE, ((BitmapDrawable) viewHolder.picture.getDrawable()).getBitmap());
+        super.onSaveInstanceState(outState);
     }
 
     /**

@@ -55,8 +55,8 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
         viewHolder.price.setText(String.valueOf(item.getPrice()));
-        viewHolder.initialQuantity.append(item.getInitialQuantity());
-        viewHolder.availableQuantity.append(item.getAvailableQuantity());
+        viewHolder.initialQuantity.setText(item.getInitialQuantity());
+        viewHolder.availableQuantity.setText(item.getAvailableQuantity());
 
         context.getIntent().putExtra(ItemDetailFragment.Keys.ITEM, item);
     }

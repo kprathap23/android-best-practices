@@ -5,77 +5,104 @@
                 tools:context="com.nbempire.android.sample.component.activity.VIPActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/item_title"
-        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:freezesText="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/dollar_sign"
         android:id="@+id/item_price_label"
-        android:layout_below="@+id/item_title"
-        android:layout_toStartOf="@+id/item_price"
-        android:layout_toLeftOf="@+id/item_price"/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/item_price"
         android:layout_below="@+id/item_title"
+        android:layout_toLeftOf="@+id/item_price"
+        android:layout_toStartOf="@+id/item_price"
+        android:text="@string/dollar_sign"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_below="@+id/item_title"
+        android:freezesText="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <Switch
+        android:id="@+id/track_item_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/track_item"
-        android:id="@+id/track_item_switch"
-        android:layout_below="@+id/item_price"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_below="@+id/item_price"
+        android:text="@string/track_item"/>
 
     <TextView
+        android:id="@+id/item_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/item_subtitle"
-        android:layout_below="@+id/track_item_switch"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/track_item_switch"
+        android:freezesText="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <ImageView
+        android:id="@+id/item_picture"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/item_picture"
+        android:layout_above="@+id/item_initial_quantity_label"
         android:layout_below="@+id/item_subtitle"
-        android:layout_above="@+id/item_initial_quantity"
         android:layout_centerHorizontal="true"/>
 
     <TextView
+        android:id="@+id/item_initial_quantity_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/initial_quantity"
-        android:id="@+id/item_initial_quantity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:text="@string/initial_quantity"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <TextView
+        android:id="@+id/item_initial_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/available_quantity"
-        android:id="@+id/item_available_quantity"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item_initial_quantity_label"
+        android:layout_toRightOf="@+id/item_initial_quantity_label"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:freezesText="true"/>
+
+    <TextView
+        android:id="@+id/item_available_quantity_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/item_available_quantity"
+        android:layout_toStartOf="@+id/item_available_quantity"
+        android:text="@string/available_quantity"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <TextView
+        android:id="@+id/item_available_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:freezesText="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 </RelativeLayout>
