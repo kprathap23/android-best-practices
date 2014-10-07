@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Home"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+    android:layout_marginLeft="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+    <RelativeLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="@dimen/left_column_weight"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp">
+
+        <EditText
+            android:id="@+id/searchQuery"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/search_label"
+            android:selectAllOnFocus="false"/>
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/searchQuery"
+            android:onClick="findItems"
+            android:text="@string/search"/>
+
+        <FrameLayout
+            android:id="@+id/search_fragment_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/searchButton">
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/item_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="@dimen/right_column_weight"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp">
+    </FrameLayout>
+
+</LinearLayout>
