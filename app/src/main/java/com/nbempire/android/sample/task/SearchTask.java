@@ -55,7 +55,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
         context.getIntent().putExtra(SearchFragment.Keys.PAGEABLE, pageable);
 
         itemAdapter.setPageable(pageable);
-        itemAdapter.addAll(pageable.getResult());
+        itemAdapter.addAll(pageable.getResults());
         Log.d(TAG, "Total items in adapter: " + itemAdapter.getCount());
     }
 }

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
@@ -19,19 +18,11 @@ import com.nbempire.android.sample.repository.ItemRepository;
 import com.nbempire.android.sample.repository.contract.ItemContract;
 import com.nbempire.android.sample.repository.dbhelper.ItemsTrackerDbHelper;
 import com.nbempire.android.sample.util.Pageable;
-import com.nbempire.android.sample.util.impl.PageableImpl;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,12 +87,13 @@ public class ItemRepositoryImpl implements ItemRepository {
 
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'.000Z'")
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(MainKeys.MELI_API_HOST)
                 .setConverter(new GsonConverter(gson))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         remoteRepository = restAdapter.create(ItemRemoteRepository.class);
@@ -111,36 +103,10 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public Pageable<Item> findByTitle(String title, Paging paging) {
-        Pageable<Item> pageable = null;
+        Log.d(TAG, "Executing request against MeLi API...");
 
-        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance(HTTP_CLIENT_USER_AGENT);
-        try {
-            String resource = MainKeys.MELI_API_HOST + "/sites/MLA/search?q=" + URLEncoder.encode(title, ENCODING) + "&limit=" + paging.getLimit() + "&offset=" + paging.getOffset() + "&attributes=paging,results";
-            HttpGet get = new HttpGet(resource);
-
-            Log.d(TAG, "Executing request against MeLi API: " + resource);
-            HttpResponse response = androidHttpClient.execute(get);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), ENCODING));
-            JSONObject object = new JSONObject(reader.readLine());
-
-            androidHttpClient.close();
-
-            List<Item> items = parseJsonItems(object.getJSONArray(Keys.Search.RESULTS));
-
-            JSONObject jsonPaging = object.getJSONObject(Keys.Search.PAGING);
-            paging.setOffset(jsonPaging.getInt(Keys.Paging.OFFSET));
-            paging.setTotal(jsonPaging.getInt(Keys.Paging.TOTAL));
-            paging.setLimit(jsonPaging.getInt(Keys.Paging.LIMIT));
-
-            pageable = new PageableImpl<Item>(title, items, paging);
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "Error encoding user input for make an HTTP request: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, "Error executing GET: " + e.getMessage());
-        } catch (JSONException e) {
-            Log.e(TAG, "Error parsing response: " + e.getMessage());
-        }
+        Pageable<Item> pageable = remoteRepository.findByTitle(title, paging.getLimit(), paging.getOffset());
+        pageable.setQuery(title);
 
         return pageable;
     }

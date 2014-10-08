@@ -15,14 +15,8 @@ import java.util.List;
 public class PageableImpl<T extends Parcelable> implements Pageable<T> {
 
     private String query;
-    private List<T> result;
+    private List<T> results;
     private Paging paging;
-
-    public PageableImpl(String query, List<T> result, Paging paging) {
-        this.query = query;
-        this.result = result;
-        this.paging = paging;
-    }
 
     @Override
     public String getQuery() {
@@ -30,14 +24,20 @@ public class PageableImpl<T extends Parcelable> implements Pageable<T> {
     }
 
     @Override
-    public List<T> getResult() {
-        return this.result;
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    @Override
+    public List<T> getResults() {
+        return this.results;
     }
 
     @Override
     public Paging getPaging() {
         return this.paging;
     }
+
 
     //  Everything from here is required to use Item as a Parcelable object.
     @Override
@@ -48,7 +48,7 @@ public class PageableImpl<T extends Parcelable> implements Pageable<T> {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(query);
-        parcel.writeList(result);
+        parcel.writeList(results);
         parcel.writeParcelable(paging, 0);
     }
 
@@ -65,8 +65,8 @@ public class PageableImpl<T extends Parcelable> implements Pageable<T> {
     public PageableImpl(Parcel in) {
         this.query = in.readString();
 
-        this.result = new ArrayList<T>();
-        in.readList(this.result, getClass().getClassLoader());
+        this.results = new ArrayList<T>();
+        in.readList(this.results, getClass().getClassLoader());
 
         this.paging = in.readParcelable(getClass().getClassLoader());
     }

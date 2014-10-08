@@ -13,7 +13,9 @@ public interface Pageable<T> extends Parcelable {
 
     public String getQuery();
 
-    public List<T> getResult();
+    void setQuery(String query);
+
+    public List<T> getResults();
 
     public Paging getPaging();
 
