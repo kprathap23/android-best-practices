@@ -13,13 +13,13 @@ import com.google.gson.GsonBuilder;
 import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Paging;
+import com.nbempire.android.sample.dto.ItemDto;
+import com.nbempire.android.sample.dto.PictureDto;
 import com.nbempire.android.sample.repository.ItemRepository;
 import com.nbempire.android.sample.repository.contract.ItemContract;
 import com.nbempire.android.sample.repository.dbhelper.ItemsTrackerDbHelper;
 import com.nbempire.android.sample.util.Pageable;
 import com.nbempire.android.sample.util.impl.PageableImpl;
-import com.nbempire.android.sample.vo.ItemVo;
-import com.nbempire.android.sample.vo.PictureVo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -272,26 +272,26 @@ public class ItemRepositoryImpl implements ItemRepository {
         return value == null || value.equalsIgnoreCase("null") ? null : value;
     }
 
-    private Item parse(ItemVo itemVo) {
-        Item item = new Item(itemVo.getId(), itemVo.getTitle(), itemVo.getPrice(), itemVo.getStopTime());
-        item.setAvailableQuantity(itemVo.getAvailableQuantity());
-        item.setInitialQuantity(itemVo.getInitialQuantity());
-        item.setSubtitle(itemVo.getSubtitle());
-        item.setMainPictureUrl(getMainPicture(itemVo.getPictures()));
+    private Item parse(ItemDto itemDto) {
+        Item item = new Item(itemDto.getId(), itemDto.getTitle(), itemDto.getPrice(), itemDto.getStopTime());
+        item.setAvailableQuantity(itemDto.getAvailableQuantity());
+        item.setInitialQuantity(itemDto.getInitialQuantity());
+        item.setSubtitle(itemDto.getSubtitle());
+        item.setMainPictureUrl(getMainPicture(itemDto.getPictures()));
         return item;
     }
 
-    private String getMainPicture(List<PictureVo> jsonPictures) {
+    private String getMainPicture(List<PictureDto> jsonPictures) {
         String url = null;
         int maxSize = 0;
 
-        for (PictureVo pictureVo : jsonPictures) {
-            String[] sizes = pictureVo.getSize().split("x");
+        for (PictureDto pictureDto : jsonPictures) {
+            String[] sizes = pictureDto.getSize().split("x");
             int surface = Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]);
             if (surface > maxSize) {
                 maxSize = surface;
 
-                url = pictureVo.getUrl();
+                url = pictureDto.getUrl();
             }
         }
 

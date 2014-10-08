@@ -1,4 +1,4 @@
-package com.nbempire.android.sample.vo;
+package com.nbempire.android.sample.dto;
 
 import java.util.Date;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by nbarrios on 08/10/14.
  */
-public class ItemVo {
+public class ItemDto {
 
     private String id;
     private int initialQuantity;
@@ -15,7 +15,7 @@ public class ItemVo {
     private float price;
     private Date stopTime;
     private String subtitle;
-    private List<PictureVo> pictures;
+    private List<PictureDto> pictures;
 
     public String getId() {
         return id;
@@ -45,7 +45,7 @@ public class ItemVo {
         return subtitle;
     }
 
-    public List<PictureVo> getPictures() {
+    public List<PictureDto> getPictures() {
         return pictures;
     }
 }

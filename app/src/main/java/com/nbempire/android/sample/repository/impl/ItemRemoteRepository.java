@@ -1,6 +1,6 @@
 package com.nbempire.android.sample.repository.impl;
 
-import com.nbempire.android.sample.vo.ItemVo;
+import com.nbempire.android.sample.dto.ItemDto;
 
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -12,6 +12,6 @@ import retrofit.http.Path;
 public interface ItemRemoteRepository {
 
     @GET("/items/{id}?attributes=id,title,price,subtitle,initial_quantity,available_quantity,stop_time,pictures")
-    ItemVo findById(@Path("id") String id);
+    ItemDto findById(@Path("id") String id);
 
 }

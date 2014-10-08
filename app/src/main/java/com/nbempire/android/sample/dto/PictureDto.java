@@ -1,9 +1,9 @@
-package com.nbempire.android.sample.vo;
+package com.nbempire.android.sample.dto;
 
 /**
  * Created by nbarrios on 08/10/14.
  */
-public class PictureVo {
+public class PictureDto {
 
     private String id;
     private String url;
