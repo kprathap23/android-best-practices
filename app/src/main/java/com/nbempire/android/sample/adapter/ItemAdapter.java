@@ -16,9 +16,9 @@ import android.widget.TextView;
 import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
-import com.nbempire.android.sample.manager.ImageDownloadManager;
 import com.nbempire.android.sample.task.SearchTask;
 import com.nbempire.android.sample.util.Pageable;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -104,7 +104,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Item eachItem = getItem(position);
 
         if (viewHolder.thumbnail != null) {
-            ImageDownloadManager.load(eachItem.getThumbnail(), viewHolder.thumbnail);
+            Picasso.with(context).load(eachItem.getThumbnail()).into(viewHolder.thumbnail);
         }
 
         if (viewHolder.title != null) {

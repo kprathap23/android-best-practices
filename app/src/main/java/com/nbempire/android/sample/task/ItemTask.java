@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import com.nbempire.android.sample.component.fragment.ItemDetailFragment;
 import com.nbempire.android.sample.domain.Item;
-import com.nbempire.android.sample.manager.ImageDownloadManager;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by nbarrios on 29/09/14.
@@ -50,7 +50,7 @@ public class ItemTask extends AsyncTask<String, Integer, Item> {
 
     @Override
     protected void onPostExecute(Item item) {
-        ImageDownloadManager.load(item.getMainPictureUrl(), viewHolder.picture);
+        Picasso.with(context).load(item.getMainPictureUrl()).into(viewHolder.picture);
 
         viewHolder.title.setText(item.getTitle());
         viewHolder.subtitle.setText(item.getSubtitle());
