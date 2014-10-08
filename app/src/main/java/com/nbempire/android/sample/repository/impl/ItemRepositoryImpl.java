@@ -41,8 +41,6 @@ public class ItemRepositoryImpl implements ItemRepository {
      * Used for log messages.
      */
     private static final String TAG = "ItemRepositoryImpl";
-    private static final String ENCODING = "UTF-8";
-    private static final String HTTP_CLIENT_USER_AGENT = "userAgent";
 
     private static ItemRepository instance;
     private static ItemRemoteRepository remoteRepository;
@@ -51,17 +49,6 @@ public class ItemRepositoryImpl implements ItemRepository {
      * Existent keys on API.
      */
     private static class Keys {
-
-        private static class Search {
-            public static final String RESULTS = "results";
-            public static final String PAGING = "paging";
-        }
-
-        private static class Paging {
-            public static final String TOTAL = "total";
-            public static final String OFFSET = "offset";
-            public static final String LIMIT = "limit";
-        }
 
         private static class Item {
             public static final String ID = "id";
