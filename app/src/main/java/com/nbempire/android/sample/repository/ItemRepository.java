@@ -13,6 +13,8 @@ public interface ItemRepository {
 
     Pageable<Item> findByTitle(String title, Paging paging);
 
+    Item findById(String id);
+
     List<Item> getTrackedItems();
 
     /**

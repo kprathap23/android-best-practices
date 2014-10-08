@@ -1,4 +1,4 @@
-package com.nbempire.android.sample.repository;
+package com.nbempire.android.sample.repository.impl;
 
 import com.nbempire.android.sample.vo.ItemVo;
 
