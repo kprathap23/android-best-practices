@@ -141,7 +141,7 @@ public class ItemTrackerService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionTrackItem(Context context, String id, String title, Long price, Date stopTime) {
+    public static void startActionTrackItem(Context context, String id, String title, float price, Date stopTime) {
         Intent intent = new Intent(context, ItemTrackerService.class);
         intent.setAction(Action.TRACK_ITEM);
         intent.putExtra(Keys.ITEM_ID, id);

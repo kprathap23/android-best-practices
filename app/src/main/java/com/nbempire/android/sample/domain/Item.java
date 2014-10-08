@@ -15,21 +15,21 @@ public class Item implements Parcelable {
 
     private String id;
     private String title;
-    private long price;
+    private float price;
     private String subtitle;
-    private String availableQuantity;
+    private int availableQuantity;
     private String thumbnail;
-    private String initialQuantity;
+    private int initialQuantity;
     private String mainPictureUrl;
     private Date stopTime;
 
-    public Item(String id, String title, long price) {
+    public Item(String id, String title, float price) {
         this.id = id;
         this.title = title;
         this.price = price;
     }
 
-    public Item(String id, String title, long price, Date stopTime) {
+    public Item(String id, String title, float price, Date stopTime) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -48,11 +48,11 @@ public class Item implements Parcelable {
         return subtitle;
     }
 
-    public void setAvailableQuantity(String availableQuantity) {
+    public void setAvailableQuantity(int availableQuantity) {
         this.availableQuantity = availableQuantity;
     }
 
-    public String getAvailableQuantity() {
+    public int getAvailableQuantity() {
         return availableQuantity;
     }
 
@@ -68,15 +68,15 @@ public class Item implements Parcelable {
         return id;
     }
 
-    public void setInitialQuantity(String initialQuantity) {
+    public void setInitialQuantity(int initialQuantity) {
         this.initialQuantity = initialQuantity;
     }
 
-    public String getInitialQuantity() {
+    public int getInitialQuantity() {
         return initialQuantity;
     }
 
-    public long getPrice() {
+    public float getPrice() {
         return price;
     }
 
@@ -116,10 +116,10 @@ public class Item implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(title);
-        parcel.writeLong(price);
+        parcel.writeFloat(price);
         parcel.writeString(subtitle);
-        parcel.writeString(initialQuantity);
-        parcel.writeString(availableQuantity);
+        parcel.writeInt(initialQuantity);
+        parcel.writeInt(availableQuantity);
         parcel.writeString(thumbnail);
         parcel.writeLong(stopTime != null ? stopTime.getTime() : 0);
     }
@@ -127,10 +127,10 @@ public class Item implements Parcelable {
     public Item(Parcel in) {
         this.id = in.readString();
         this.title = in.readString();
-        this.price = in.readLong();
+        this.price = in.readFloat();
         this.subtitle = in.readString();
-        this.initialQuantity = in.readString();
-        this.availableQuantity = in.readString();
+        this.initialQuantity = in.readInt();
+        this.availableQuantity = in.readInt();
         this.thumbnail = in.readString();
         this.stopTime = new Date(in.readLong());
     }

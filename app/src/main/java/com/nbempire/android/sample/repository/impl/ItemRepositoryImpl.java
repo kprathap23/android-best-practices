@@ -70,14 +70,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             public static final String SUBTITLE = "subtitle";
             public static final String AVAILABLE_QUANTITY = "available_quantity";
             public static final String THUMBNAIL = "thumbnail";
-            public static final String INITIAL_QUANTITY = "initial_quantity";
-            public static final String PICTURES = "pictures";
             public static final String STOP_TIME = "stop_time";
-
-            public class Picture {
-                public static final String SIZE = "size";
-                public static final String URL = "url";
-            }
         }
 
     }
@@ -129,33 +122,6 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
 
         return pageable;
-    }
-
-    @Override
-    public Item findById(String id) {
-        AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance(HTTP_CLIENT_USER_AGENT);
-        String resource = MainKeys.MELI_API_HOST + "/items/" + id + "?attributes=id,title,price,subtitle,initial_quantity,available_quantity,stop_time,pictures";
-
-        HttpGet get = new HttpGet(resource);
-
-        Log.d(TAG, "Executing request against MeLi API: " + resource);
-        Item item = null;
-        try {
-            HttpResponse response = androidHttpClient.execute(get);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), ENCODING));
-            JSONObject jsonObject = new JSONObject(reader.readLine());
-
-            androidHttpClient.close();
-
-            item = parseJsonItem(jsonObject, true);
-        } catch (IOException e) {
-            Log.e(TAG, "Error executing GET: " + e.getMessage());
-        } catch (JSONException e) {
-            Log.e(TAG, "Error parsing response: " + e.getMessage());
-        }
-
-        return item;
     }
 
     @Override
@@ -238,16 +204,16 @@ public class ItemRepositoryImpl implements ItemRepository {
         List<Item> items = new ArrayList<Item>();
 
         for (int i = 0; i < results.length(); i++) {
-            items.add(parseJsonItem(results.getJSONObject(i), false));
+            items.add(parseJsonItem(results.getJSONObject(i)));
         }
 
         return items;
     }
 
-    private Item parseJsonItem(JSONObject eachObject, boolean getItemSpecificValues) throws JSONException {
+    private Item parseJsonItem(JSONObject eachObject) throws JSONException {
         Item eachItem = new Item(eachObject.getString(Keys.Item.ID), parseJson(eachObject.getString(Keys.Item.TITLE)), eachObject.getLong(Keys.Item.PRICE));
         eachItem.setSubtitle(parseJson(eachObject.getString(Keys.Item.SUBTITLE)));
-        eachItem.setAvailableQuantity(parseJson(eachObject.getString(Keys.Item.AVAILABLE_QUANTITY)));
+        eachItem.setAvailableQuantity(eachObject.getInt(Keys.Item.AVAILABLE_QUANTITY));
 
         try {
             eachItem.setThumbnail(parseJson(eachObject.getString(Keys.Item.THUMBNAIL)));
@@ -259,11 +225,6 @@ public class ItemRepositoryImpl implements ItemRepository {
             eachItem.setStopTime(parseDate(eachObject.getString(Keys.Item.STOP_TIME)));
         } catch (JSONException e) {
             // Do nothing. It can be or not.
-        }
-
-        if (getItemSpecificValues) {
-            eachItem.setInitialQuantity(parseJson(eachObject.getString(Keys.Item.INITIAL_QUANTITY)));
-            eachItem.setMainPictureUrl(getMainPicture(eachObject.getJSONArray(Keys.Item.PICTURES)));
         }
 
         return eachItem;
@@ -279,26 +240,6 @@ public class ItemRepositoryImpl implements ItemRepository {
             Log.e(TAG, "Error while parsing stopTime: " + e.getMessage());
         }
         return date;
-    }
-
-    private String getMainPicture(JSONArray jsonPictures) throws JSONException {
-        String url = null;
-        int maxSize = 0;
-
-
-        for (int i = 0; i < jsonPictures.length(); i++) {
-            JSONObject eachPicture = jsonPictures.getJSONObject(i);
-
-            String[] sizes = eachPicture.getString(Keys.Item.Picture.SIZE).split("x");
-            int surface = Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]);
-            if (surface > maxSize) {
-                maxSize = surface;
-
-                url = eachPicture.getString(Keys.Item.Picture.URL);
-            }
-        }
-
-        return url;
     }
 
     private static String parseJson(String value) {

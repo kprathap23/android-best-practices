@@ -74,13 +74,8 @@ public class ItemDetailFragment extends Fragment {
             viewHolder.subtitle.setText(item.getSubtitle());
             viewHolder.price.setText(String.valueOf(item.getPrice()));
 
-            if (item.getInitialQuantity() != null) {
-                viewHolder.initialQuantity.setText(item.getInitialQuantity());
-            }
-
-            if (item.getAvailableQuantity() != null) {
-                viewHolder.availableQuantity.setText(item.getAvailableQuantity());
-            }
+            viewHolder.initialQuantity.setText(String.valueOf(item.getInitialQuantity()));
+            viewHolder.availableQuantity.setText(String.valueOf(item.getAvailableQuantity()));
 
             ItemService itemService = ItemServiceImpl.getInstance(context);
             if (itemService.isTracked(item.getId())) {
