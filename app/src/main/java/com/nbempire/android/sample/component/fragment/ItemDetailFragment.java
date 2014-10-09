@@ -15,17 +15,22 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.nbempire.android.sample.R;
+import com.nbempire.android.sample.component.fragment.base.BaseSpiceFragment;
 import com.nbempire.android.sample.component.service.ItemTrackerService;
 import com.nbempire.android.sample.domain.Item;
+import com.nbempire.android.sample.repository.request.ItemSpiceRequest;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 import com.nbempire.android.sample.task.ItemTask;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
  * {@link ItemDetailFragment.OnFragmentInteractionListener} interface to handle interaction events.
  */
-public class ItemDetailFragment extends Fragment {
+public class ItemDetailFragment extends BaseSpiceFragment {
 
     /**
      * Used for log messages.
@@ -68,7 +73,7 @@ public class ItemDetailFragment extends Fragment {
             viewHolder.initialQuantity = (TextView) view.findViewById(R.id.item_initial_quantity);
             viewHolder.availableQuantity = (TextView) view.findViewById(R.id.item_available_quantity);
 
-            new ItemTask(context, viewHolder).execute(item.getId());
+            getSpiceManager().execute(new ItemSpiceRequest(item.getId()), item.getId(), DurationInMillis.ONE_DAY, new ItemSpiceRequestListener());
 
             viewHolder.title.setText(item.getTitle());
             viewHolder.subtitle.setText(item.getSubtitle());
@@ -142,4 +147,26 @@ public class ItemDetailFragment extends Fragment {
         void onTrackItemSwitchSelected(CompoundButton compoundButton, boolean checked, Item item);
     }
 
+    private final class ItemSpiceRequestListener implements com.octo.android.robospice.request.listener.RequestListener<Item> {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Log.v(TAG, "onRequestFailure...");
+            //  TODO : Run!! xD
+        }
+
+        @Override
+        public void onRequestSuccess(Item item) {
+            Log.v(TAG, "onRequestSuccess...");
+
+            Picasso.with(context).load(item.getMainPictureUrl()).into(viewHolder.picture);
+
+            viewHolder.title.setText(item.getTitle());
+            viewHolder.subtitle.setText(item.getSubtitle());
+            viewHolder.price.setText(String.valueOf(item.getPrice()));
+            viewHolder.initialQuantity.setText(String.valueOf(item.getInitialQuantity()));
+            viewHolder.availableQuantity.setText(String.valueOf(item.getAvailableQuantity()));
+
+            context.getIntent().putExtra(ItemDetailFragment.Keys.ITEM, item);
+        }
+    }
 }

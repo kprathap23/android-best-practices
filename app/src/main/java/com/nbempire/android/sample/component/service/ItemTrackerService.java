@@ -61,7 +61,7 @@ public class ItemTrackerService extends IntentService {
             if (Action.CHECK_ITEMS.equals(action)) {
                 handleActionCheckItems();
             } else if (Action.TRACK_ITEM.equals(action)) {
-                itemService.trackItem(intent.getStringExtra(Keys.ITEM_ID), intent.getLongExtra(Keys.ITEM_PRICE, 0), intent.getLongExtra(Keys.ITEM_STOP_TIME, 0), intent.getStringExtra(Keys.ITEM_TITLE));
+                itemService.trackItem(intent.getStringExtra(Keys.ITEM_ID), intent.getFloatExtra(Keys.ITEM_PRICE, 0), intent.getLongExtra(Keys.ITEM_STOP_TIME, 0), intent.getStringExtra(Keys.ITEM_TITLE));
             } else if (Action.STOP_TRACKING_ITEM.equals(action)) {
                 itemService.stopTracking(intent.getStringExtra(Keys.ITEM_ID));
             } else {

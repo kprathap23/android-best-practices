@@ -7,6 +7,8 @@ import android.util.Log;
 import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
+import com.nbempire.android.sample.dto.ItemDto;
+import com.nbempire.android.sample.dto.PictureDto;
 import com.nbempire.android.sample.repository.ItemRepository;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 import com.nbempire.android.sample.service.ItemService;
@@ -62,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void trackItem(String id, Long price, Long stopTime, String title) {
+    public void trackItem(String id, float price, Long stopTime, String title) {
         Log.v(TAG, "trackItem... id: " + id + ", price: " + price + ", milliseconds: " + stopTime + ", title: " + title);
         itemRepository.save(id, price, stopTime, title);
 
@@ -98,4 +100,29 @@ public class ItemServiceImpl implements ItemService {
         return remoteItem.getPrice() != item.getPrice();
     }
 
+    public static Item parse(ItemDto itemDto) {
+        Item item = new Item(itemDto.getId(), itemDto.getTitle(), itemDto.getPrice(), itemDto.getStopTime());
+        item.setAvailableQuantity(itemDto.getAvailableQuantity());
+        item.setInitialQuantity(itemDto.getInitialQuantity());
+        item.setSubtitle(itemDto.getSubtitle());
+        item.setMainPictureUrl(getMainPicture(itemDto.getPictures()));
+        return item;
+    }
+
+    private static String getMainPicture(List<PictureDto> jsonPictures) {
+        String url = null;
+        int maxSize = 0;
+
+        for (PictureDto pictureDto : jsonPictures) {
+            String[] sizes = pictureDto.getSize().split("x");
+            int surface = Integer.valueOf(sizes[0]) * Integer.valueOf(sizes[1]);
+            if (surface > maxSize) {
+                maxSize = surface;
+
+                url = pictureDto.getUrl();
+            }
+        }
+
+        return url;
+    }
 }
