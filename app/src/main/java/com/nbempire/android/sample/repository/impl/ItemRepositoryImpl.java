@@ -80,7 +80,6 @@ public class ItemRepositoryImpl implements ItemRepository {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(MainKeys.MELI_API_HOST)
                 .setConverter(new GsonConverter(gson))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         remoteRepository = restAdapter.create(ItemRemoteRepository.class);
