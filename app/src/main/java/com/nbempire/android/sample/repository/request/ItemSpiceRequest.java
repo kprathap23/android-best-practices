@@ -1,7 +1,7 @@
 package com.nbempire.android.sample.repository.request;
 
 import com.nbempire.android.sample.domain.Item;
-import com.nbempire.android.sample.repository.impl.ItemRemoteRepository;
+import com.nbempire.android.sample.repository.ItemRemoteRepository;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
 

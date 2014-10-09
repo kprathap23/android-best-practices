@@ -14,7 +14,7 @@ import com.nbempire.android.sample.R;
 import com.nbempire.android.sample.component.activity.VIPActivity;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.service.ItemService;
-import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+import com.nbempire.android.sample.service.ServicesFacade;
 import com.nbempire.android.sample.util.DateUtils;
 
 import java.util.Date;
@@ -48,7 +48,7 @@ public class ItemTrackerService extends IntentService {
 
     public ItemTrackerService() {
         super("ItemTrackerService");
-        itemService = ItemServiceImpl.getInstance(this);
+        itemService = ServicesFacade.getItemService(this);
     }
 
     @Override

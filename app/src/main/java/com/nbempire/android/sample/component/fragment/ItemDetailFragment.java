@@ -20,7 +20,7 @@ import com.nbempire.android.sample.component.service.ItemTrackerService;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.repository.request.ItemSpiceRequest;
 import com.nbempire.android.sample.service.ItemService;
-import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+import com.nbempire.android.sample.service.ServicesFacade;
 import com.nbempire.android.sample.task.ItemTask;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -82,7 +82,7 @@ public class ItemDetailFragment extends BaseSpiceFragment {
             viewHolder.initialQuantity.setText(String.valueOf(item.getInitialQuantity()));
             viewHolder.availableQuantity.setText(String.valueOf(item.getAvailableQuantity()));
 
-            ItemService itemService = ItemServiceImpl.getInstance(context);
+            ItemService itemService = ServicesFacade.getItemService(context);
             if (itemService.isTracked(item.getId())) {
                 switchView.setChecked(true);
             }

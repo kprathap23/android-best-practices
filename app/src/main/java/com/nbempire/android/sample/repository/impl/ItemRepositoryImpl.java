@@ -6,13 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.nbempire.android.sample.MainKeys;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Paging;
+import com.nbempire.android.sample.repository.ItemRemoteRepository;
 import com.nbempire.android.sample.repository.ItemRepository;
+import com.nbempire.android.sample.repository.RepositoriesFacade;
 import com.nbempire.android.sample.repository.contract.ItemContract;
 import com.nbempire.android.sample.repository.dbhelper.ItemsTrackerDbHelper;
 import com.nbempire.android.sample.service.impl.ItemServiceImpl;
@@ -27,9 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
 
 /**
  * Created by nbarrios on 24/09/14.
@@ -70,18 +65,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     private ItemRepositoryImpl(Context context) {
         dbHelper = new ItemsTrackerDbHelper(context);
-
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                .create();
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(MainKeys.MELI_API_HOST)
-                .setConverter(new GsonConverter(gson))
-                .build();
-
-        remoteRepository = restAdapter.create(ItemRemoteRepository.class);
+        remoteRepository = RepositoriesFacade.getItemRemoteRepository();
     }
 
     private ItemsTrackerDbHelper dbHelper;

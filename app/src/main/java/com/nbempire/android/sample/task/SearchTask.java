@@ -12,7 +12,7 @@ import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.service.ItemService;
-import com.nbempire.android.sample.service.impl.ItemServiceImpl;
+import com.nbempire.android.sample.service.ServicesFacade;
 import com.nbempire.android.sample.util.Pageable;
 
 /**
@@ -34,7 +34,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
 
     public SearchTask(Activity context, ItemAdapter itemAdapter) {
         this.context = context;
-        this.itemService = ItemServiceImpl.getInstance(context);
+        this.itemService = ServicesFacade.getItemService(context);
         this.preferencesEditor = context.getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
         this.itemAdapter = itemAdapter;
     }

@@ -1,4 +1,4 @@
-package com.nbempire.android.sample.repository.impl;
+package com.nbempire.android.sample.repository;
 
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.dto.ItemDto;

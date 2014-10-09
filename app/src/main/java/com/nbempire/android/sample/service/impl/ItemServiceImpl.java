@@ -10,7 +10,7 @@ import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.dto.ItemDto;
 import com.nbempire.android.sample.dto.PictureDto;
 import com.nbempire.android.sample.repository.ItemRepository;
-import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
+import com.nbempire.android.sample.repository.RepositoriesFacade;
 import com.nbempire.android.sample.service.ItemService;
 import com.nbempire.android.sample.util.Pageable;
 
@@ -38,7 +38,7 @@ public class ItemServiceImpl implements ItemService {
 
     public static ItemService getInstance(Context context) {
         if (instance == null) {
-            instance = new ItemServiceImpl(context, ItemRepositoryImpl.getInstance(context));
+            instance = new ItemServiceImpl(context, RepositoriesFacade.getItemRepository(context));
         }
         return instance;
     }
