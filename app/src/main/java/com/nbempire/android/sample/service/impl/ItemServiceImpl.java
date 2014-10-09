@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.nbempire.android.sample.MainKeys;
+import com.nbempire.android.sample.Application;
 import com.nbempire.android.sample.domain.Item;
 import com.nbempire.android.sample.domain.Search;
 import com.nbempire.android.sample.dto.ItemDto;
@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.nbempire.android.sample.MainKeys.APP_SHARED_PREFERENCES;
-import static com.nbempire.android.sample.MainKeys.TRACKED_ITEMS_ID;
+import static com.nbempire.android.sample.Application.Keys.APP_SHARED_PREFERENCES;
+import static com.nbempire.android.sample.Application.Keys.TRACKED_ITEMS_ID;
 
 /**
  * Created by nbarrios on 24/09/14.
@@ -69,7 +69,7 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.save(id, price, stopTime, title);
 
         SharedPreferences preferences = context.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        Set<String> ids = preferences.getStringSet(MainKeys.TRACKED_ITEMS_ID, new HashSet<String>());
+        Set<String> ids = preferences.getStringSet(Application.Keys.TRACKED_ITEMS_ID, new HashSet<String>());
         ids.add(id);
         preferences.edit().putStringSet(TRACKED_ITEMS_ID, ids).apply();
     }
@@ -77,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean isTracked(String id) {
         SharedPreferences preferences = context.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return preferences.getStringSet(MainKeys.TRACKED_ITEMS_ID, new HashSet<String>()).contains(id);
+        return preferences.getStringSet(Application.Keys.TRACKED_ITEMS_ID, new HashSet<String>()).contains(id);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ItemServiceImpl implements ItemService {
 
         // Remove item from shared preferences "cache".
         SharedPreferences preferences = context.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        Set<String> ids = preferences.getStringSet(MainKeys.TRACKED_ITEMS_ID, new HashSet<String>());
+        Set<String> ids = preferences.getStringSet(Application.Keys.TRACKED_ITEMS_ID, new HashSet<String>());
         ids.remove(id);
         preferences.edit().putStringSet(TRACKED_ITEMS_ID, ids).apply();
 

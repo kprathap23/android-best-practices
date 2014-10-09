@@ -5,7 +5,7 @@ import android.content.Context;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nbempire.android.sample.MainKeys;
+import com.nbempire.android.sample.Application;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 
 import retrofit.RestAdapter;
@@ -27,7 +27,7 @@ public abstract class RepositoriesFacade {
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(MainKeys.MELI_API_HOST)
+                .setEndpoint(Application.Keys.MELI_API_HOST)
                 .setConverter(new GsonConverter(gson))
                 .build();
 

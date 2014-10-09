@@ -21,4 +21,18 @@ public class Application extends android.app.Application {
 
         BootCompletedReceiver.setupApplicationIfNeeded(this);
     }
+
+    /**
+     * Created by nbarrios on 26/09/14.
+     */
+    public static final class Keys {
+        public static final String MELI_API_HOST = "https://api.mercadolibre.com";
+
+        public static final String APP_SHARED_PREFERENCES = "app";
+
+        public static final int CHECK_TRACKED_ITEMS_INTERVAL = 60000;
+        public static final String CHECK_TRACKED_ITEMS_INTERVAL_SECONDS = "60";
+
+        public static final String TRACKED_ITEMS_ID = "trackedItemsId";
+    }
 }

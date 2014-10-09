@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.nbempire.android.sample.MainKeys;
+import com.nbempire.android.sample.Application;
 import com.nbempire.android.sample.component.service.ItemTrackerService;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
@@ -32,7 +32,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public static void setupApplicationIfNeeded(Context context) {
         Log.v(TAG, "setupApplicationIfNeeded...");
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Application.Keys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getBoolean(FIRST_LOAD, true)) {
             Log.d(TAG, "Setting up application...");
@@ -44,12 +44,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     }
 
     private static void setupAlarms(Context context) {
-        Log.i(TAG, "Setting up service: " + ItemTrackerService.class.getName() + " to run between " + MainKeys.CHECK_TRACKED_ITEMS_INTERVAL_SECONDS + "seconds");
+        Log.i(TAG, "Setting up service: " + ItemTrackerService.class.getName() + " to run between " + Application.Keys.CHECK_TRACKED_ITEMS_INTERVAL_SECONDS + "seconds");
 
         Intent serviceIntent = new Intent(context, ItemTrackerService.class);
         serviceIntent.setAction(ItemTrackerService.Action.CHECK_ITEMS);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 20000, MainKeys.CHECK_TRACKED_ITEMS_INTERVAL, PendingIntent.getService(context, 1, serviceIntent, 0));
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 20000, Application.Keys.CHECK_TRACKED_ITEMS_INTERVAL, PendingIntent.getService(context, 1, serviceIntent, 0));
     }
 }

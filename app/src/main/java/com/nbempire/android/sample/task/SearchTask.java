@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.nbempire.android.sample.MainKeys;
+import com.nbempire.android.sample.Application;
 import com.nbempire.android.sample.adapter.ItemAdapter;
 import com.nbempire.android.sample.component.fragment.SearchFragment;
 import com.nbempire.android.sample.domain.Item;
@@ -35,7 +35,7 @@ public class SearchTask extends AsyncTask<Search, Integer, Pageable<Item>> {
     public SearchTask(Activity context, ItemAdapter itemAdapter) {
         this.context = context;
         this.itemService = ServicesFacade.getItemService(context);
-        this.preferencesEditor = context.getSharedPreferences(MainKeys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+        this.preferencesEditor = context.getSharedPreferences(Application.Keys.APP_SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
         this.itemAdapter = itemAdapter;
     }
 

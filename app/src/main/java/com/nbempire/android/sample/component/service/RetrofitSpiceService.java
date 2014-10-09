@@ -2,7 +2,7 @@ package com.nbempire.android.sample.component.service;
 
 import android.util.Log;
 
-import com.nbempire.android.sample.MainKeys;
+import com.nbempire.android.sample.Application;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
 
 /**
@@ -27,7 +27,7 @@ public class RetrofitSpiceService extends RetrofitGsonSpiceService {
     @Override
     protected String getServerUrl() {
         Log.v(TAG, "getServerUrl...");
-        return MainKeys.MELI_API_HOST;
+        return Application.Keys.MELI_API_HOST;
     }
 
 }
