@@ -9,6 +9,7 @@ import com.nbempire.android.sample.Application;
 import com.nbempire.android.sample.repository.impl.ItemRepositoryImpl;
 
 import retrofit.RestAdapter;
+import retrofit.converter.Converter;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -21,17 +22,21 @@ public abstract class RepositoriesFacade {
     }
 
     public static ItemRemoteRepository getItemRemoteRepository() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Application.Keys.MELI_API_HOST)
+                .setConverter(getGsonConverter())
+                .build();
+
+        return restAdapter.create(ItemRemoteRepository.class);
+    }
+
+    public static Converter getGsonConverter() {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Application.Keys.MELI_API_HOST)
-                .setConverter(new GsonConverter(gson))
-                .build();
-
-        return restAdapter.create(ItemRemoteRepository.class);
+        return new GsonConverter(gson);
     }
 
 }

@@ -3,7 +3,11 @@ package com.nbempire.android.sample.component.service;
 import android.util.Log;
 
 import com.nbempire.android.sample.Application;
+import com.nbempire.android.sample.repository.RepositoriesFacade;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
+
+import retrofit.RestAdapter;
+import retrofit.converter.Converter;
 
 /**
  * Created by nbarrios on 09/10/14.
@@ -30,4 +34,17 @@ public class RetrofitSpiceService extends RetrofitGsonSpiceService {
         return Application.Keys.MELI_API_HOST;
     }
 
+    @Override
+    protected Converter createConverter() {
+        return RepositoriesFacade.getGsonConverter();
+    }
+
+    @Override
+    protected RestAdapter.Builder createRestAdapterBuilder() {
+        RestAdapter.Builder restAdapterBuilder = super.createRestAdapterBuilder();
+
+        restAdapterBuilder.setLogLevel(RestAdapter.LogLevel.FULL);
+
+        return restAdapterBuilder;
+    }
 }
