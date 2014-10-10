@@ -6,7 +6,6 @@ import com.nbempire.android.sample.Application;
 import com.nbempire.android.sample.repository.RepositoriesFacade;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
 
-import retrofit.RestAdapter;
 import retrofit.converter.Converter;
 
 /**
@@ -39,12 +38,4 @@ public class RetrofitSpiceService extends RetrofitGsonSpiceService {
         return RepositoriesFacade.getGsonConverter();
     }
 
-    @Override
-    protected RestAdapter.Builder createRestAdapterBuilder() {
-        RestAdapter.Builder restAdapterBuilder = super.createRestAdapterBuilder();
-
-        restAdapterBuilder.setLogLevel(RestAdapter.LogLevel.FULL);
-
-        return restAdapterBuilder;
-    }
 }
